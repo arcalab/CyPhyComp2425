@@ -23,6 +23,7 @@ concurrent algorithms.
   | 06 feb. 2024 | NA |
   | 11 feb. 2024 | Introduction to CCS ([slides](./CCS/CCS.pdf)) |
   | 13 feb. 2024 | Continuation of the previous lecture |
+
 # Assessment
 
 The assessment is comprised of two individual assignments. 
