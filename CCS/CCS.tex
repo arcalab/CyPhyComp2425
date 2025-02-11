@@ -89,10 +89,19 @@
 
 \frame[plain]{\titlepage}
 
-\section{Syntax and Semantics of Programming}
+\section{Syntax and semantics of programming}
+
+\begin{frame}{The three ingredients of cyber-physical systems}
+        \begin{itemize}
+                \item \alert{\underline{Concurrency}}
+                \item \alert{\underline{Communication}}
+                \item Hybrid interaction
+        \end{itemize}
+\end{frame}
+
 
 \begin{frame}{A sprinkle of linguistics}
-  We will often face two linguistic concepts that every programmer
+  We will face two linguistic concepts that every programmer
   ought to know
   \begin{itemize}
   \item syntax - determines whether a sentence
@@ -107,14 +116,14 @@
     \end{example}
   \begin{example}[semantics]
       The sentence (program) $\mathtt{x := 1}$ has the meaning ``writes
-      \texttt{1} in the memory address corresponding to \texttt{x}''
+      \texttt{1} in the memory address of \texttt{x}''
   \end{example}
 \end{frame}
 
 \begin{frame}{The need for semantics in programming}
 
   How can one prove that a program does what is supposed to do if its
-  semantics (i.e. its meaning) is not established \emph{a priori}?
+  semantics (\ie\ its meaning) is not established \emph{a priori}?
 
   \vfill
   \begin{examples}
@@ -133,12 +142,12 @@
 
 \begin{frame}{Transition systems as semantic providers}
 
-  Transition systems are an \alert{ubiquitous mechanism} for defining the
-  semantics of programming languages 
+  Transition systems are an \alert{ubiquitous mechanism} for defining semantics
+  of programming languages 
 
   \vfill
   Following tradition, we will use them to define the
-  semantics of a simple (but powerful !!) concurrent language ---
+  semantics of a simple (but powerful !!) concurrent language \dots\
 
   and then base on this learning step to tackle Dijkstra's 
 
@@ -156,7 +165,7 @@
 
 \end{frame}
 
-\section{A Simple Concurrent Language and its Semantics}
+\section{A simple concurrent language and its semantics}
 
 \begin{frame}{Calculus of Communicating Systems}
 
@@ -175,9 +184,9 @@
   \end{minipage}
   \begin{itemize}
   \item $X$ is a process name
-  \item $a. P$ \underline{communicates} via \underline{channel} $a$ and proceeds as $P$
+  \item $a. P$ \alert{\underline{communicates}} via \alert{\underline{channel}} $a$ and proceeds as $P$
   \item $\sum_{ i \in I} P_i$ non-deterministic choice between processes $P_i$
-  \item $P \parallel Q$ \underline{parallel composition} 
+  \item $P \parallel Q$ \alert{\underline{parallel composition}}
           between processes $P$ and $Q$
   \item $P \backslash L$ makes channels in $L$ private `outside' of $P$
   \end{itemize}
@@ -220,7 +229,7 @@
   \end{enumerate}
 \end{frame}
 
-\begin{frame}{CCS and Cyclic Behaviour}
+\begin{frame}{CCS and cyclic behaviour}
   We now add the construct \alert{$\mathtt{rec}\ X.\ P$} to the syntax of CCS -- so that we
   can describe cyclic behaviour
 
@@ -347,7 +356,7 @@
 \end{frame}
 
 \begin{frame}{Going beyond the Dining Philosophers Problem \dots}
-        Detection of both \alert{deadlocks} and \alert{livelocks} \eg\ in
+        Detection of \alert{deadlocks} and similar problems in
         \begin{itemize}
                 \item Driving systems 
                 \item Pacemakers
