@@ -1,0 +1,539 @@
+\documentclass{beamer}
+\usepackage{etex} % fixes new-dimension error
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[absolute,overlay]{textpos} % this is for textblock
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, calc, fit, tikzmark}
+\usepackage{pgfplots}
+
+%-------------- template --------------------------------------------------
+\usetheme{metropolis}
+\metroset{block=fill}
+%\usetheme{Boadilla}
+
+% Configuring the foot line
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertsection
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+% No configuration symbols
+\setbeamertemplate{navigation symbols}{}
+%----------------------------------------------------------------------------
+
+% context
+\AtBeginSection[]
+{
+    \begin{frame}
+        \frametitle{Table of Contents}
+        \tableofcontents[currentsection]
+    \end{frame}
+}
+\author[Renato Neves]{Renato Neves}
+% logos of institutions
+\titlegraphic{
+  \begin{textblock*}{5cm}(6.7cm,7.57cm)
+     \includegraphics[scale=0.05525]{images/uminho.png}
+  \end{textblock*}
+  \begin{textblock*}{5cm}(9.4cm,7.57cm)
+    \includegraphics[scale=0.50]{images/haslab.pdf}
+  \end{textblock*}
+}
+% No date
+\date{}
+
+\input{macros/preamble}
+\input{macros/macros}
+
+%----------------------------------------------------------------------------
+\usepackage{graphicx,amsmath}
+\usepackage{stmaryrd} % cf. interleave
+\usepackage{booktabs}
+\usepackage{amscd}
+
+\usepackage{alltt}
+%------ using xy ------------------------------------------------------------
+\usepackage[all]{xy}
+%\def\larrow#1#2#3{\xymatrix{ #3 & #1 \ar[l] _-{#2} }}
+\def\larrow#1#2#3{\xymatrix{ #3 & #1 \ar[l] _--{#2} }}
+\def\rarrow#1#2#3{\xymatrix{ #1 \ar[r]^-{#2} & #3 }}
+\def\arLaw#1#2#3#4#5{
+\xymatrix{
+        #1      \ar@/^1pc/[rr]^-{#4} &
+        #5 &
+        #2      \ar@/^1pc/[ll]^-{#3}
+}}
+\def\arLeq#1#2#3#4{\arLaw{#1}{#2}{#3}{#4}\leq}
+%------ using pstricks (rnode etc) ------------------------------------------
+\usepackage{pstricks,pst-node,pst-text,pst-3d}
+%------ using color ---------------------------------------------------------
+
+\newrgbcolor{goldenrod}{.80392 .60784 .11373}
+\newrgbcolor{darkgoldenrod}{.5451 .39608 .03137}
+\newrgbcolor{brown}{.15 .15 .15}
+\newrgbcolor{darkolivegreen}{.33333 .41961 .18431}
+%
+%
+\def\gold#1{{\goldenrod #1}}
+% \def\dgold#1{{\darkgoldenrod #1}}
+\def\dgold#1{{\alert{#1}}}
+%\def\brw#1{{\brown #1}}
+\def\dkb#1{{\blue #1}}
+\def\tdkb#1{\textbf{\darkblue #1}}
+%%\def\gre#1{{\green #1}}
+\def\gre#1{{\darkolivegreen #1}}
+\def\gry#1{{\gray #1}}
+\def\rdb#1{{\red #1}}
+\def\st{\mathbf{.}\,}
+\def\laplace#1#2{*\txt{\mbox{ \fcolorbox{black}{myGray}{$\begin{array}{c}\mbox{#1}\\\\#2\\\\\end{array}$} }}}
+%\newcommand{\galois}[2]{#1\; \dashv\; #2}
+
+\def\eqm{\mathbin{\equiv}}                     
+\def\noeqm{\mathbin{\not\!\equiv}}  
+%\newcommand{\flam}[2]{\lambda_{#1}\; .\; #2}
+\def\existential#1#2{\exists_{#1}\;.\; #2}
+\def\existencial#1#2{\exists_{#1}\;.\; #2}
+
+\def\pv#1#2{\langle #1 \rangle #2}
+\def\nc#1#2{[#1]#2}
+\def\pvo#1#2{\langle \! \! \! \langle #1 \rangle \! \! \! \rangle\, #2}
+\def\nco#1#2{\llbracket #1 \rrbracket #2}
+\def\cvg#1{\llbracket \downarrow \rrbracket #1}
+\def\cvgr#1#2{\llbracket #1 \downarrow \rrbracket #2}
+\def\cvgl#1#2{\llbracket \downarrow  #1 \rrbracket #2}
+\def\cvglr#1#2{\llbracket \downarrow  #1 \downarrow \rrbracket #2}
+\def\lfp#1#2{\mu {#1}\, .\, {#2}}
+\def\lpf#1#2{\mu {#1}\, .\, {#2}}
+\def\gfp#1#2{\nu {#1}\, .\, {#2}}
+\def\gpf#1#2{\nu {#1}\, .\, {#2}}
+\def\mset#1{\vvv #1 \vvv}
+\def\vvv{\vert \! \vert}
+\def\mnc#1{\vvv [#1] \vvv}
+\def\mpv#1{\vvv \langle #1 \rangle \vvv}
+\def\bcomp#1{#1^{\text{c}}}
+\def\eqm{\mathbin{\simeq}}
+\def\noeqm{\mathbin{\not\!\simeq}}
+\def\universal#1#2{\forall_{#1}\;.\; #2}
+\def\existential#1#2{\exists_{#1}\;.\; #2}
+\def\oexistential#1#2{\exists^{1}_{#1}\;.\; #2}
+\def\MM{\mathcal{M}}
+\def\uppaal{\textsc{Uppaal}}
+\def\cc#1{\mathcal{C}(#1)}
+\def\R{\mathcal{R}}
+\def\TL#1{\mathcal{T}(#1)}
+\def\ET#1{\mathsf{ExecTime(#1)}}
+
+
+\begin{document}
+
+\title{Timed Automata}
+
+\frame[plain]{\titlepage}
+
+\begin{frame}{Last lecture}
+  Visited \alert{\underline{syntax}} and \alert{\underline{semantics}}
+
+  Analysed central ideas in \alert{\underline{concurrency}} and
+  \alert{\underline{synchronisation}}
+
+  \pause
+  \vfill
+  We will now see how \alert{\underline{time}} fits in the items above
+\end{frame}
+\section{Motivation}
+%----------------------------------------------------------------------------------
+\begin{slide}{Motivation}
+
+
+Saying that an airbag in a car crash \alert{eventually
+inflates} is insufficient -- it would be better to say that \dots
+\begin{center}
+\dots\ in a car crash the airbag inflates \alert{\underline{within 20ms}}
+\end{center}
+ 
+\vfill
+\emph{Correctness in time-critical systems not only depends on
+      the logical result of the computation, but also \alert{on \underline{the time}
+      at which the results are produced}}
+\begin{flushright}
+[Baier \& Katoen, 2008]
+\end{flushright}
+\end{slide}
+
+\begin{slide}{Examples of time-critical systems}
+
+\begin{block}{(Network-based) traffic lights}
+  Lights activate at specific time intervals
+\end{block}
+
+\smallskip
+\begin{block}{(Re)transmission  protocols}
+  Communication of large files between a remote unit and a video/audio
+  equipment. 
+\end{block}
+
+\smallskip
+\begin{block}{Many others}
+Pacemakers, autonomous driving, electric grids
+\dots
+\end{block}
+\end{slide}
+
+\begin{slide}{This chapter}
+        We will explore an \alert{\underline{automaton-based formalism}} with an explicit notion of 
+        a \alert{\underline{clock}} 
+\begin{center}
+\fbox{Timed Automata [Alur \& Dill, 90]}
+\end{center}
+
+
+\bigskip
+Associated tool
+\begin{itemize}
+\item \uppaal\ [Behrmann, David, Larsen, 04]
+\end{itemize}
+\end{slide}
+%----------------------------------------------------------------------------------
+\begin{slide}{\uppaal}
+
+\begin{center}
+\fbox{\uppaal\ = (\alert{Upp}sala University + \alert{Aal}borg University) [1995]}
+\end{center}
+
+\begin{itemize}
+\item Toolbox for modelling and analysis of timed systems
+\item Systems modelled as \alert{\underline{networks}} of timed automata 
+        with \alert{\underline{channel synchronisations}}
+\item Properties specified in a \alert{\underline{temporal logic}} 
+\end{itemize}
+
+\end{slide}
+
+\section{The very basics of timed automata}
+
+
+\begin{slide}{Timed automata}
+Finite-state machines equipped with \alert{\underline{real-valued clocks}}
+
+\begin{itemize}
+\item clocks can only be read or
+\item reset to zero (after which they start increasing their value again as time progresses)
+\item a clock's value corresponds to time elapsed since its last reset 
+\item all clocks proceed synchronously (\emph{i.e.} at the same rate)
+\end{itemize}
+\end{slide}
+% % ----------------------------------------------------------------------------------
+
+\begin{frame}{Example: the annoying lamp}
+  
+\begin{figure}[htb]
+  \centering
+  \includegraphics[scale=0.35]{./images/Lamp.pdf}\\
+\end{figure}
+
+\centering
+{\scriptsize (extracted from \uppaal)}
+
+\end{frame}
+
+\begin{slide}{Guards, updates, and invariants}
+\small \centering
+
+\begin{tabular}{c}
+   \includegraphics[width=8cm]{./images/model0.jpg} \\  \includegraphics[width=7cm]{./images/model1.jpg}
+\end{tabular}
+
+\end{slide}
+
+\begin{slide}{Timed automata}
+\small
+A timed automaton is a tuple
+$\pair{\mathbf{L}, \mathbf{L_0}, \mathbf{Act}, \mathbf{C}, \mathbf{Tr}, 
+\mathbf{Inv}}$ 
+\begin{itemize}
+     \item $\mathbf{L}$ a set of locations and 
+             $\mathbf{L_0} \subseteq \mathbf{L}$ set
+        of \alert{initial} locations
+\item $\mathbf{Act}$ set of actions (\alert{channels}) 
+        and $\mathbf{C}$ set of clocks
+     \item
+             $\mathbf{Tr} \subseteq \mathbf{L} 
+             \times \cc{\mathbf{C}} \times \mathbf{Act} 
+             \times \pow{(\mathbf{C})} \times \mathbf{L}$
+     is a \alert{transition} relation
+\begin{equation*}
+  \ell_1\; \tran{g,a,U}\;  \ell_2
+\end{equation*}
+transition from location $\ell_1$ to $\ell_2$, labelled by $a$, enabled if
+\alert{guard} $g$ holds; when performed resets the set $U$ of clocks
+\item $\fdec{\mathbf{Inv}}{\mathbf{L}}{\cc{\mathbf{C}}}$ assignment of invariants to
+  locations
+\end{itemize}
+$\cc{\mathbf{C}}$ denotes the set of clock constraints over a set $C$ of
+clocks
+\end{slide}
+
+\begin{slide}{Clock constraints}
+
+Each constraint is formed according to 
+\begin{equation*}
+  g \; ::=\; x \mathbin{\square} n \; \mid\; x - y \mathbin{\square} n  \; \mid\; g \e g \;\mid\; true
+\end{equation*}
+where $x,y \in C, n \in \N$ and $\square \in \enset{<,\leq,>,\geq,=}$
+
+This is used in
+\begin{itemize}
+\item transitions (enabling conditions) -- a transition cannot occur
+  if its guard is false
+\item locations (safety conditions) -- a location must be left before
+  its invariant becomes false
+\end{itemize}
+
+\end{slide}
+
+\begin{frame}{A revisit of the annoying lamp}
+  
+\begin{figure}[htb]
+  \centering
+  \includegraphics[scale=0.35]{./images/Lamp.pdf}\\
+\end{figure}
+
+Exercise: define $\pair{L, L_0, Act, C, Tr, Inv}$ 
+
+\end{frame}
+
+\section{Parallel Composition}
+
+\begin{frame}{Parallel composition of timed automata}
+
+        Action labels as channels
+
+        Communication mechanism analogous to CCS
+
+        Shared clocks
+\end{frame}
+
+\begin{slide}{Definition}
+
+  Let $H = Act_1 \cap Act_2$. The parallel composition of
+  $ta_1$ and $ta_2$ synchronising on $H$ is the timed automaton
+
+  \vspace{0.2cm}
+$ta_1 \parallel_H ta_2 := \pair{L_1 \times L_2, L_{0,1} \times L_{0,2}, 
+\mathbf{Act}, C_1 \cup C_2, \mathbf{Tr}, 
+\mathbf{Inv}}$
+
+  \vspace{0.2cm}
+\begin{itemize}
+\item $\mathbf{Act} = ((Act_1 \cup Act_2) - H) \cup \enset{\tau}$
+\item $\mathbf{Inv} (\ell_1,\ell_2) = Inv_1(\ell_1) \e  Inv_2(\ell_2)$
+\item $\mathbf{Tr}$ is given by:
+\begin{itemize}
+\item $(\ell_1,\ell_2) \tran{g,a,U} (\ell'_1,\ell_2)\; $ if $\; a \not \in H \e  \ell_1 \tran{g,a,U} \ell'_1 $
+\item $(\ell_1,\ell_2) \tran{g,a,U} (\ell_1,\ell'_2)\; $ if $\; a \not \in H \e   \ell_2 \tran{g,a,U} \ell'_2$
+\item $(\ell_1,\ell_2) \tran{g,\tau,U} (\ell'_1,\ell'_2)\; $ if $\; a \in H \e  \ell_1 \tran{g_1,a,U_1} \ell'_1 \e \ell_2 \tran{g_2,\overline{a},U_2} \ell'_2$\\
+with $g = g_1 \e g_2$ and $U = U_1 \cup U_2$
+\end{itemize}
+\end{itemize}
+\end{slide}
+
+\begin{slide}{Example: (re)revisiting the lamp interrupt}
+\small
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[scale=0.25]{./images/Lamp.pdf}
+  \includegraphics[scale=0.09]{./images/User.pdf}\\
+\end{figure}
+
+
+\vfill
+\begin{block}{In \uppaal}
+\begin{itemize}
+\item Complementary
+  actions marked by \alert{?} and \alert{!} annotations
+\end{itemize}
+\end{block}
+\end{slide}
+
+% %----------------------------------------------------------------------------------
+\begin{slide}{Exercise: worker, hammer, nail}
+        Write down the parallel composition of the following automata
+
+\begin{figure}[htb]
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=50mm]{./images/Worker.pdf}
+  \hspace{0.5cm}
+  \includegraphics[width=50mm]{./images/Hammer.pdf}
+
+  \vspace{0.5cm}
+  \includegraphics[width=50mm]{./images/Nail.pdf}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%
+\section{Semantics}
+%%%%%%%%%%%%
+% %----------------------------------------------------------------------------------
+\begin{slide}{Semantics of timed automata}
+\small\centering
+\begin{tabular}{lc@{~~}l}
+\toprule 
+\dgold{Syntax} && \dgold{Semantics}\\
+\cmidrule(lr){1-3}
+% Process Languages (eg CCS) &  & LTS (Labelled Transition Systems)\\
+\gry{\emph{How to write}} & & \gry{\emph{How to execute}}\\
+CCS &  & LTS \\
+Timed Automaton &  & TLTS (Timed LTS) \\
+\bottomrule
+\end{tabular}
+~\\
+~\\
+~\\
+
+\vfill
+\begin{block}{Timed LTS}
+Introduce \alert{delay transitions} to capture the passage of time
+\begin{align*}
+s \tran{a} s' & \;\; \text{for $a \in Act$, are ordinary transitions due to action occurrence }\\
+s \tran{d} s' &\; \;  \text{for $d \in \mathbb{R}_{\geq 0}$, are \alert{delay} transitions}
+\end{align*}
+subject to sanity constraints \dots 
+\end{block}
+\end{slide}
+% %----------------------------------------------------------------------------------
+\begin{slide}{Timed LTS pt. II}
+        \begin{enumerate}
+                \item
+        Time additivity
+        \begin{equation*}
+        (s \tran{d} s'  \e 0 \leq d' \leq d)\; \imp\; s  \tran{d'} s'' \tran{\; d-d'}           s' \; \text{for some state $s''$}
+        \end{equation*}
+        \item Delay transitions are deterministic
+        \begin{equation*}
+        (s \tran{d} s'  \e s \tran{d} s'')\; \imp\; s'  = s''
+        \end{equation*}
+        \end{enumerate}
+\end{slide}
+% %----------------------------------------------------------------------------------
+\begin{slide}{The semantics}
+Every TA $ta$ defines a TLTS 
+\begin{equation*}
+\TL{ta}
+\end{equation*}
+whose states are pairs 
+\begin{equation*}
+\pair{\text{location}, \text{clocks valuations}}
+\end{equation*}
+\end{slide}
+% %----------------------------------------------------------------------------------
+\begin{slide}{Clock valuation}
+
+\begin{block}{Definition}
+A clock valuation \alert{$\eta$} for a set of clocks $C$ is a function 
+\begin{equation*}
+\fdec{\alert{\eta}}{C}{\mathbb{R}_{\geq 0}}
+\end{equation*}
+assigning to each clock $x \in C$ its current value $\alert{\eta}\, x$
+\end{block}
+~\\
+
+\begin{block}{Satisfaction of Clock Constraints}
+\begin{align*}
+\alert{\eta} \models x \mathbin{\square} n \; & \dimp\; \alert{\eta}\, x \mathbin{\square} n\\
+\alert{\eta} \models x-y \mathbin{\square} n \; & \dimp\; (\alert{\eta}\, x - \alert{\eta}\, y) \mathbin{\square} n\\
+\alert{\eta} \models g_1 \e g_2 \; & \dimp\; \alert{\eta} \models g_1 \e \alert{\eta} \models g_2
+\end{align*}
+\end{block}
+\end{slide}
+
+\begin{slide}{Operations on clock valuations}
+\begin{block}{Delay}
+For each $d \in \mathbb{R}_{\geq_0}$, valuation $\eta \alert{+ d}$ is given by
+\begin{equation*}
+(\eta \alert{+ d})\, x\; =\; \eta\, x\; +\; d
+\end{equation*}
+\end{block}
+~\\
+
+\begin{block}{Reset}
+For each $R \subseteq C$, valuation $\eta\alert{[R]}$ is given by
+\begin{equation*}
+\begin{cases}
+\eta\alert{[R]}\, x\; =\; \eta\, x & \; \text{if}\; x \not\in R\\
+\eta\alert{[R]}\, x\; =\; 0 & \; \text{if}\; x \in R
+\end{cases}
+\end{equation*}
+\end{block}
+\end{slide}
+
+\begin{slide}{From $ta$ to $\TL{ta}$}
+\small
+Let $ta = \pair{L, L_0, Act, C, Tr, Inv}$
+\begin{equation*}
+        \TL{ta}\; =\; \pair{\mathbf{S}, \mathbf{S_0} \subseteq S, \mathbf{N}, 
+        \mathbf{T}}
+\end{equation*}
+where
+\begin{itemize}
+\item
+        $\mathbf{S} = \setdef{(l,\eta) \in L \times
+    (\mathbb{R}_{\geq 0})^C}{\eta \models Inv(l)}$
+\item
+        $\mathbf{S_0} = \setdef{(\ell_0,\eta)}{\ell_0 \in L_0\; \e\;
+    \eta\, x = 0\; \text{for all $x \in C$}}$
+\item $\textbf{N} = Act + \mathbb{R}_{\geq 0}$ (i.e., transitions can be
+    labelled by actions or delays)
+\item $\textbf{T} \subseteq S \times N \times S$ is given by
+\end{itemize}
+\begin{align*}
+(l,\eta) \tran{a} (l',\eta')\; & ~~\text{if}~~\; 
+\exists_{l \tran{g,a,U} l' \in Tr}  \; \; \eta \models g \; \e\; \eta' = \eta[U] \; \e\; \eta' \models Inv(l')\\
+(l,\eta) \tran{d} (l,\eta +d)\; & ~~\text{if}~~\; 
+\eta + d \models Inv(l)
+\end{align*}
+\end{slide}
+\begin{slide}{Example: the simple switch pt. I}
+\small
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=5cm]{./images/SwitchA.pdf}\\
+\end{figure}
+
+\vfill
+\begin{block}{$\TL{\textsf{Simple switch}}$}
+\begin{equation*}
+S = \setdef{(off,t)}{t \in \mathbb{R}_{\geq 0}} \cup \setdef{(on,t)}{0 \leq t \leq 2} 
+\end{equation*}
+where $t$ is a shorthand for $\eta$ such that $\eta\, x = t$
+\end{block}
+\end{slide}
+% % ----------------------------------------------------------------------------------
+\begin{slide}{Example: the simple switch pt. II}
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=4cm]{./images/SwitchA.pdf}\\
+\end{figure}
+\vfill
+\begin{block}{$\TL{\textsf{Simple switch}}$}
+\begin{align*}
+(off,t) \tran{d} (off,t+d)\; & \; \text{for all $t,d \geq 0$}\\
+(off,t) \tran{in?} (on,0)\; & \; \text{for all $t \geq 0$}\\
+(on,t) \tran{d} (on,t+d)\; & \; \text{for all $t,d \geq 0$ and $t+d \leq 2$}\\
+(on,t) \ \tran{out!} (off,t)\; & \; \text{for all $1 \leq t \leq 2$}
+\end{align*}
+\end{block}
+\end{slide}
+
+\end{document}
