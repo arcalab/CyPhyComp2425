@@ -19,10 +19,12 @@ concurrent algorithms.
 
   | Date         | Description |
   | ----------   |------------ |
-  | 04 feb. 2024 | Introduction to the module and its logistics ([slides](intro.pdf)) |
-  | 06 feb. 2024 | NA |
-  | 11 feb. 2024 | Introduction to CCS ([slides](./CCS/CCS.pdf)) |
-  | 13 feb. 2024 | Continuation of the previous lecture |
+  | 04 feb. 2025 | Introduction to the module and its logistics ([slides](intro.pdf)) |
+  | 06 feb. 2025 | NA |
+  | 11 feb. 2025 | Introduction to CCS ([slides](./CCS/CCS.pdf)) |
+  | 13 feb. 2025 | Continuation of the previous lecture |
+  | 18 feb. 2025 | Jornadas da Física |
+  | 20 feb. 2025 | | 
 
 # Assessment
 
