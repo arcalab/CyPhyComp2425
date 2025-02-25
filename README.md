@@ -24,7 +24,8 @@ concurrent algorithms.
   | 11 feb. 2025 | Introduction to CCS ([slides](./CCS/CCS.pdf)) |
   | 13 feb. 2025 | Continuation of the previous lecture |
   | 18 feb. 2025 | Jornadas da Física |
-  | 20 feb. 2025 | | 
+  | 20 feb. 2025 | NA | 
+  | 25 feb. 2025 | Introduction to timed automata ([slides](./introtimedAutomata/timed-automata.pdf)) |
 
 # Assessment
 
