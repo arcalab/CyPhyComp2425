@@ -1,0 +1,413 @@
+\documentclass{beamer}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[absolute,overlay]{textpos} % this is for textblock
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, calc, fit, tikzmark}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+%-------------- template --------------------------------------------------
+\usetheme{metropolis}
+\metroset{block=fill}
+%\usetheme{Boadilla}
+
+% Configuring the foot line
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertsection
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+% No configuration symbols
+\setbeamertemplate{navigation symbols}{}
+%----------------------------------------------------------------------------
+
+% context
+\AtBeginSection[]
+{
+    \begin{frame}
+        \frametitle{Table of Contents}
+        \tableofcontents[currentsection]
+    \end{frame}
+}
+\author[Renato Neves]{Renato Neves}
+% logos of institutions
+\titlegraphic{
+  \begin{textblock*}{5cm}(6.7cm,7.57cm)
+     \includegraphics[scale=0.05525]{./images/uminho.png}
+  \end{textblock*}
+  \begin{textblock*}{5cm}(9.4cm,7.57cm)
+    \includegraphics[scale=0.50]{./images/haslab.pdf}
+  \end{textblock*}
+}
+% No date
+\date{}
+
+\input{macros/preamble}
+\input{macros/macros}
+
+%----------------------------------------------------------------------------
+\usepackage{graphicx,amsmath}
+\usepackage{stmaryrd} % cf. interleave
+\usepackage{booktabs}
+\usepackage{amscd}
+
+\usepackage{alltt}
+%------ using xy ------------------------------------------------------------
+\usepackage[all]{xy}
+%\def\larrow#1#2#3{\xymatrix{ #3 & #1 \ar[l] _-{#2} }}
+\def\larrow#1#2#3{\xymatrix{ #3 & #1 \ar[l] _--{#2} }}
+\def\rarrow#1#2#3{\xymatrix{ #1 \ar[r]^-{#2} & #3 }}
+\def\arLaw#1#2#3#4#5{
+\xymatrix{
+        #1      \ar@/^1pc/[rr]^-{#4} &
+        #5 &
+        #2      \ar@/^1pc/[ll]^-{#3}
+}}
+\def\arLeq#1#2#3#4{\arLaw{#1}{#2}{#3}{#4}\leq}
+%------ using pstricks (rnode etc) ------------------------------------------
+\usepackage{pstricks,pst-node,pst-text,pst-3d}
+%------ using color ---------------------------------------------------------
+
+\newrgbcolor{goldenrod}{.80392 .60784 .11373}
+\newrgbcolor{darkgoldenrod}{.5451 .39608 .03137}
+\newrgbcolor{brown}{.15 .15 .15}
+\newrgbcolor{darkolivegreen}{.33333 .41961 .18431}
+%
+%
+\def\gold#1{{\goldenrod #1}}
+% \def\dgold#1{{\darkgoldenrod #1}}
+\def\dgold#1{{\alert{#1}}}
+%\def\brw#1{{\brown #1}}
+\def\dkb#1{{\blue #1}}
+\def\tdkb#1{\textbf{\darkblue #1}}
+%%\def\gre#1{{\green #1}}
+\def\gre#1{{\darkolivegreen #1}}
+\def\gry#1{{\gray #1}}
+\def\rdb#1{{\red #1}}
+\def\st{\mathbf{.}\,}
+\def\laplace#1#2{*\txt{\mbox{ \fcolorbox{black}{myGray}{$\begin{array}{c}\mbox{#1}\\\\#2\\\\\end{array}$} }}}
+%\newcommand{\galois}[2]{#1\; \dashv\; #2}
+
+\def\eqm{\mathbin{\equiv}}                     
+\def\noeqm{\mathbin{\not\!\equiv}}  
+%\newcommand{\flam}[2]{\lambda_{#1}\; .\; #2}
+\def\existential#1#2{\exists_{#1}\;.\; #2}
+\def\existencial#1#2{\exists_{#1}\;.\; #2}
+
+\def\pv#1#2{\langle #1 \rangle #2}
+\def\nc#1#2{[#1]#2}
+\def\pvo#1#2{\langle \! \! \! \langle #1 \rangle \! \! \! \rangle\, #2}
+\def\nco#1#2{\llbracket #1 \rrbracket #2}
+\def\cvg#1{\llbracket \downarrow \rrbracket #1}
+\def\cvgr#1#2{\llbracket #1 \downarrow \rrbracket #2}
+\def\cvgl#1#2{\llbracket \downarrow  #1 \rrbracket #2}
+\def\cvglr#1#2{\llbracket \downarrow  #1 \downarrow \rrbracket #2}
+\def\lfp#1#2{\mu {#1}\, .\, {#2}}
+\def\lpf#1#2{\mu {#1}\, .\, {#2}}
+\def\gfp#1#2{\nu {#1}\, .\, {#2}}
+\def\gpf#1#2{\nu {#1}\, .\, {#2}}
+\def\mset#1{\vvv #1 \vvv}
+\def\vvv{\vert \! \vert}
+\def\mnc#1{\vvv [#1] \vvv}
+\def\mpv#1{\vvv \langle #1 \rangle \vvv}
+\def\bcomp#1{#1^{\text{c}}}
+\def\eqm{\mathbin{\simeq}}
+\def\noeqm{\mathbin{\not\!\simeq}}
+\def\universal#1#2{\forall_{#1}\;.\; #2}
+\def\existential#1#2{\exists_{#1}\;.\; #2}
+\def\oexistential#1#2{\exists^{1}_{#1}\;.\; #2}
+\def\MM{\mathcal{M}}
+\def\uppaal{\textsc{Uppaal}}
+\def\cc#1{\mathcal{C}(#1)}
+\def\R{\mathcal{R}}
+\def\TL#1{\mathcal{T}(#1)}
+\def\ET#1{\mathsf{ExecTime(#1)}}
+
+
+
+\begin{document}
+
+\title{Verification of Timed Systems}
+
+\frame[plain]{\titlepage}
+
+%----------------------------------------------------------------------------------
+\begin{slide}{The Satisfaction Problem}
+
+        Given a system $S$ and a property $\varphi$ show
+        that
+        \[
+                \alert { \tikzmark{x1} \llbracket {S} \rrbracket\, \tikzmark{x2} 
+                \qquad
+        \tikzmark{y1} \models \tikzmark{y2} \qquad \varphi }
+        \]
+
+
+        \begin{tikzpicture}[overlay,remember picture, box/.style
+        = {rounded corners}, pin edge={-Stealth,thick, red}] 
+        \coordinate (x1) at
+        ($({pic cs:x1})+(-0ex, 1.5ex)$); \coordinate (x2) 
+                at ($({pic cs:x2})+(-1.5ex,-0.5ex)$); 
+        \node[semitransparent, fit=(x1) (x2),
+        pin=below:\tiny{semantics of $S$}]
+        {};
+        \end{tikzpicture}
+
+        \begin{tikzpicture}[overlay,remember picture, box/.style
+        = {rounded corners}, pin edge={-Stealth,thick, red}] 
+        \coordinate (y1) at
+        ($({pic cs:y1})+(0.5ex, 1.5ex)$); 
+        \coordinate (y2) 
+                at ($({pic cs:y2})+(-1.5ex,-0.5ex)$); 
+        \node[semitransparent, fit=(y1) (y2),
+                pin=below:\tiny{$\hspace{2.5cm}
+                        \models :: \text{Models} \times \text{Formulae}
+                \to \{ \mathtt{tt}, \mathtt{ff} \}$}]
+        {};
+        \end{tikzpicture}
+
+        The choice of which \alert{\underline{logical language}} to use for
+        writing $\varphi$ depends on the underlying computational paradigm
+\end{slide}
+
+\begin{slide}{A Logical Language for Timed Systems}
+
+	Variant of Computation Tree Logic with two types of formulae
+        \begin{center}
+                \fbox{ 
+                        description of \alert{\underline{state}} and 
+                        \alert{\underline{path}} properties 
+                }
+        \end{center}
+\end{slide}
+
+\begin{frame}{State Formulae}
+
+        \begin{block}{Grammar}
+        $
+        \Psi\; ::=\; \ell ~|~ c ~|~ \texttt{deadlock} ~|~ \texttt{not~}\Psi ~|~ \Psi
+        \texttt{ or }\Psi ~|~ \Psi \texttt{ and }\Psi 
+        $
+        \end{block}
+
+        We can thus express \alert{\underline{current locations}} $\ell$, 
+        \alert{\underline{clock constraints}} $c \in \mathcal{C}(C)$, 
+        and the presence of \alert{\underline{deadlocks}}
+\end{frame}
+
+\begin{slide}{Back to the Annoying Lamp}
+
+  \centering
+  \includegraphics[scale=0.30]{./images/Lamp}
+
+  \begin{block}{Exercise}
+          Write formulae for the following statements
+  \begin{enumerate}
+    \item The lamp is on \texttt{low} mode
+    \item Not \texttt{off} and $y>25$
+    \item If it is \texttt{low} or \texttt{bright} then $y\leq 3600$
+  \end{enumerate}
+  \end{block} 
+\end{slide}
+
+\begin{slide}{Path Formulae}
+\newcommand{\Boxc}{\dgold{\Box}}
+\newcommand{\Diamondc}{\dgold{\Diamond}}
+\newcommand{\Ac}{\dkb{A}}
+\newcommand{\Ec}{\dkb{E}}
+
+\begin{block}{Grammar}
+$\Pi\; ::=\;  \Ac \Boxc\, \Psi\, \mid\, \Ac\Diamondc\, \Psi\, \mid\, \Ec \Boxc\, \Psi\, \mid\, \Ec \Diamondc\, \Psi\, \mid\,  \Phi\, \leadsto\, \Psi
+$
+\end{block}
+
+\dkb{$A$, $E$} quantify (universally and existentially) over paths
+
+\dgold{$\Box$, $\Diamond$} quantify (universally and existentially) over
+states in a path
+
+\bigskip
+Paths are seen as possible system executions
+\end{slide}
+
+\begin{slide}{Path Formulae in Pictures}
+\centering
+
+~\\
+\begin{tabular}{cc}
+  \Large $A \Box\, \varphi$ & \Large $A \Diamond \, \varphi$ \\
+ \includegraphics[width=2.8cm]{./images/AA.jpg} &
+ \hspace{1cm} \includegraphics[width=2.8cm]{./images/AE.jpg}
+\end{tabular}
+
+~\\[2mm]
+
+% \begin{block}{$E \Box\, \varphi$ and $E \Diamond\, \varphi$}
+\begin{tabular}{cc}
+  \Large $E \Box\, \varphi$ & \Large $E \Diamond\, \varphi$ \\
+ \includegraphics[width=2.8cm]{./images/EA.jpg} &   \hspace{1cm} \includegraphics[width=2.8cm]{./images/EE.jpg}
+\end{tabular}
+% \end{block}
+\end{slide}
+
+\begin{slide}{Safety Properties}
+
+        \begin{block}{$A \Box\, \varphi \hspace{0.5cm} E \Box\, \varphi$}
+        Something bad will \alert{\underline{never}} happen, \eg\ 
+
+\begin{itemize}
+\item Temperature will never exceed the prescribed threshold
+\item System never reaches a deadlock
+\item At least one execution in which it never reaches a deadlock
+\end{itemize}
+
+\end{block}
+
+\end{slide}
+
+\begin{slide}{Reachability Properties}
+
+\begin{block}{$E \Diamond\, \varphi$}
+
+        Something good \alert{\underline{can}} happen, \eg\
+
+	\begin{itemize}
+                \item All adventurers reach the other side
+                \item All adventurers reach the other side in $\leq$ 17 minutes
+	\end{itemize}
+
+\end{block}
+
+\end{slide}
+
+
+\begin{slide}{Path Formulae}
+
+        For all paths if $\varphi$ holds at some point then $\psi$ will also
+        hold later on
+
+\small \centering
+
+% \begin{block}{$\varphi\, \leadsto\, \psi$}
+\begin{center}
+        \Large $\varphi\, \leadsto\, \psi$ \\[2mm]
+ \includegraphics[width=5cm]{./images/LeadsTo.jpg} 
+ \end{center}
+% \end{block}
+
+\end{slide}
+
+
+%----------------------------------------------------------------------------------
+\begin{slide}{Liveness Properties}
+
+\begin{block}{$A\, \Diamond\, \phi \hspace{0.5cm} \phi\, \leadsto \, \psi$}
+        If something happens then something \alert{\underline{good}}
+        \alert{\underline{eventually}} happens
+\begin{itemize}
+	\item When pressing ON the
+		television will eventually turn on
+        \item If the philosopher requests a fork she will 
+                get it
+        \item If the plane asks to land it will eventually land
+\end{itemize}
+
+\end{block}
+
+\end{slide}
+
+\begin{frame}{Exercises}
+	Write the sentences below in CTL
+	\begin{enumerate}
+		\item The system never enters in deadlock
+		\item The location $\ell$ is reachable
+		\item In all executions we reach location $\ell$
+		\item If we reach location $\ell$ we will inevitably reach
+			location $s$
+		\item There exists at least one execution where variable
+			\texttt{i} is always below or equal \texttt{10}
+		\item The two philosophers never eat at the same time
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{Back to the Annoying Lamp}
+
+        \centering
+        \includegraphics[scale=0.25]{./images/Lamp.pdf}
+
+        \begin{block}{Exercise}
+	\begin{enumerate}
+                \item The lamp can become bright;
+                \item The lamp will eventually become bright;
+                \item The lamp can never be on for more than 3600s;
+                \item It is possible to never turn on the lamp;
+                \item Whenever the light is bright, the clock $y$
+                        is non-zero;
+                \item Whenever the light is bright it will eventually
+                        become off.
+	\end{enumerate}
+        \end{block}
+\end{frame}
+
+\section{Chapter's Conclusion}
+
+\begin{frame}{Key Takeaways}
+
+        Communicating systems as \tikzmark{z1} \alert{\underline{timed automata}} 
+        \tikzmark{z2}
+
+        \begin{tikzpicture}[overlay,remember picture, box/.style
+        = {rounded corners}, pin edge={-Stealth,thick, red}] 
+        \coordinate (z1) at
+        ($({pic cs:z1})+(0.5ex, 1.5ex)$); 
+        \coordinate (z2) 
+                at ($({pic cs:z2})+(-1.5ex,-0.5ex)$); 
+        \node[semitransparent, fit=(z1) (z2),
+                pin=below:\tiny{Syntax}]
+        {};
+        \end{tikzpicture}
+
+        \vspace{0.5cm}
+        \alert{\underline{Semantics}} for rigorous analysis and verification
+
+        \vspace{1cm}
+        \alert{\underline{UPPAAL}} as an important tool of the cyber-physical engineer
+\end{frame}
+
+\begin{frame}{Key Takeaways}
+
+
+        \vspace{0.4cm}
+        \alert{\underline{Time}} as the main physical process \dots
+
+        \dots\ others will appear in the next lectures
+
+        \vspace{0.4cm}
+        Barely scratched the surface \dots
+
+        \dots\ more about the theory of timed automata 
+        in the website
+\end{frame}
+\begin{frame}{Open Challenges}
+        \alert{\underline{Quantum}} communicating systems and computational
+        tools
+
+        Reasoning precisely about \alert{\underline{imprecisions}}
+
+        The thorny
+        \href{https://www.youtube.com/watch?v=IzSs_gJDVzI}{\alert{\underline{Reachability
+        Problem}}}
+
+        \dots
+\end{frame}
+\end{document}
