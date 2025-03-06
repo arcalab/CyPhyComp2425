@@ -26,6 +26,8 @@ concurrent algorithms.
   | 18 feb. 2025 | Jornadas da Física |
   | 20 feb. 2025 | Semantics of CCS ([slides](./CCS/CCS.pdf)) | 
   | 25 feb. 2025 | Introduction to timed automata ([slides](./introtimedAutomata/timed-automata.pdf)) |
+  | 06 mar. 2025 | UPPAAL (the simple semaphore, the philosophers, the annoying lamp, and [the adventurers](https://www.youtube.com/watch?v=7yDmGnA8Hw0&t)) |
+
 
 # Assessment
 
