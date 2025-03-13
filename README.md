@@ -28,7 +28,8 @@ concurrent algorithms.
   | 25 feb. 2025 | Introduction to timed automata ([slides](./introtimedAutomata/timed-automata.pdf)) |
   | 04 mar. 2025 | Carnival |
   | 06 mar. 2025 | UPPAAL (the simple semaphore, the philosophers, the annoying lamp, and [the adventurers](https://www.youtube.com/watch?v=7yDmGnA8Hw0&t)) |
-
+  | 11 mar. 2025 | Continuation of the previous lecture |
+  | 13 mar. 2025 | Verification of timed automata ([slides](./verificationTimedAutomata/uppal.pdf)) | 
 
 # Assessment
 
