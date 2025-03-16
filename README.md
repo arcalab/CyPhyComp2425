@@ -33,8 +33,10 @@ concurrent algorithms.
 
 # Assessment
 
-The assessment is comprised of two individual assignments. 
-  
+Two individual assignments:
++ [first assignment](tp_uppaal/tp.pdf)
+
+ 
 # Contacts
 
 The day and time for appointments is Wednesday afternoon. Please email me the
