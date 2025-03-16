@@ -1,0 +1,102 @@
+\documentclass[11pt]{article}
+
+%\renewcommand\familydefault{\sfdefault}
+ 
+%input preamble and macros
+\input{preamble}
+\input{macros}
+
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{hyperref}
+\usepackage[linewidth=1pt]{mdframed}
+\usepackage{proof}
+%\newcommand{\N}{\mathbb{N}}
+%\newcommand{\Z}{\mathbb{Z}}
+
+% Named environments (no counters) 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+%\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+%\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{question}[2][Question]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+ 
+% Environments with counters
+\newtheoremstyle{myplain} {5mm}% ⟨Space above⟩
+{3mm}% ⟨Space below⟩
+{}% ⟨Body font⟩
+{}% ⟨Indent amount⟩
+{\bfseries}% ⟨Theorem head font⟩
+{.}% ⟨Punctuation after theorem head⟩
+{.5em}% ⟨Space after theorem head⟩2
+{}% ⟨Theorem head spec (can be left empty, meaning ‘normal’)⟩
+
+\date{}
+
+\theoremstyle{myplain}
+\newtheorem{exercise}{Exercise}
+
+\theoremstyle{definition} % no italics
+\newtheorem{subexercise}{}[exercise]
+
+\newcommand{\subex}[1]{\begin{subexercise}#1\end{subexercise}}
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Cyber-Physical Computation
+\\ {\small First Assignment -- the case of an airfield}}
+\author{Renato Neves}
+ 
+\maketitle
+
+Consider a private airfield used by 2 planes, which can be either flying,
+parked, landing, or taking off. The landing field is a resource shared by the
+two planes, and the following requirements must be met:
+\begin{enumerate}
+  \item only 1 plane can use the landing field at a time;
+  \item a Controller component receives requests to \emph{land} or to \emph{take off}, and replies with a \emph{wait} signal when the field is unavailable;
+  \item each plane sends requests to the Controller to \emph{land} or to \emph{take off}, and sends notifications when the field becomes \emph{free};
+  \item the Controller has 5 time units to notify a plane to wait;
+  \item after 5 time units from requesting access to the field and with no wait signal, the planes take another 5 time units to reach the field;
+  \item each plane takes non-deterministically between 1-3 time units to take off, and between 4-6 time units to land and park;
+  \item after taking off and after parking the planes notify the Controller with a \emph{gone} signal;
+  \item if a plane is told to wait, we assume it will take between 5-7 time units to reach the field.
+\end{enumerate}
+
+\noindent
+Suggest a \textsc{Uppaal} model for the planes and the controller. List 4 to 8
+desired properties that the model should satisfy. Verify the properties via
+\textsc{Uppaal}.
+
+\smallskip
+\noindent {\underline{Extra points}:} Extend your model to handle $n$ planes at
+once. Can you think of other useful features that the airfield should have? If
+so please discuss them and describe how would you model them.
+
+\bigskip
+
+\begin{mdframed}  
+  \myparagraph{What to submit:} A single report in PDF for all tasks 
+  \textbf{and} all the relevant source files. 
+  Send by email
+  (\underline{nevrenato@gmail.com}) a unique zip file
+  ``\bash{cpc2425-N.zip}'', where \bash{N} is your
+  student numbers. The subject of the email should be ``\bash{cpc2425
+    N first assignment}''.
+
+\myparagraph{Deadline:} 10th April 2025 @ 23h59
+\end{mdframed}
+
+\end{document}
