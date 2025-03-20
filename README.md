@@ -31,6 +31,7 @@ concurrent algorithms.
   | 11 mar. 2025 | Continuation of the previous lecture |
   | 13 mar. 2025 | Verification of timed automata ([slides](./verificationTimedAutomata/uppaal.pdf)) | 
   | 18 mar. 2025 | Operational semantics of simple languages ([slides](./hybridProgramming/hybridProgramming.pdf)) | 
+  | 20 mar. 2025 | Recalling Haskell ([code](./hybridProgramming/lectureCPC.hs)) | 
 
 # Assessment
 
