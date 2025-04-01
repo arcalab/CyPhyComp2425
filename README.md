@@ -33,6 +33,8 @@ concurrent algorithms.
   | 18 mar. 2025 | Operational semantics of simple languages ([slides](./hybridProgramming/hybridProgramming.pdf)) | 
   | 20 mar. 2025 | Recalling Haskell ([code](./hybridProgramming/lectureCPC.hs)) | 
   | 25 mar. 2025 | Implementation of an operational semantics ([code](./hybridProgramming/MyLang.hs)) | 
+  | 01 apr. 2025 | Hands-on approach to Lince ([code](./hybridProgramming/MyLang.hs)) | 
+  | 03 apr. 2025 | Revisions | 
 
 # Assessment
 
