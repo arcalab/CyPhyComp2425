@@ -1,0 +1,167 @@
+% Categories
+\newcommand{\catfont}[1]{\mathsf{#1}}
+\newcommand{\Law}{\catfont{Law}}
+\newcommand{\catV}{\catfont{V}}
+\newcommand{\catX}{\catfont{X}}
+\newcommand{\catC}{\catfont{C}}
+\newcommand{\catD}{\catfont{D}}
+\newcommand{\catA}{\catfont{A}}
+\newcommand{\catB}{\catfont{B}}
+\newcommand{\catI}{\catfont{I}}
+\newcommand{\Set}{\catfont{Set}}
+%\newcommand{\Top}{\catfont{Top}}
+\newcommand{\Pos}{\catfont{Pos}}
+\newcommand{\Inj}{\catfont{Inj}}
+\newcommand{\Det}{\catfont{RMhat}}
+\newcommand{\CoAlg}[1]{\catfont{CoAlg}\left (#1 \right )}
+\newcommand{\Mon}{\catfont{Mon}}
+\newcommand{\Mnd}{\catfont{Mnd}(\catC)}
+\newcommand{\SMnd}{\catfont{Mnd}(\Set)}
+\newcommand{\CLat}{\catfont{CLat}}
+\newcommand{\Stone}{\catfont{Stone}}
+\newcommand{\Spectral}{\catfont{Spectral}}
+\newcommand{\CompHaus}{\catfont{CompHaus}}
+\newcommand{\Subs}[2]{\catfont{Sub}_{}}
+\newcommand{\Cone}{\catfont{Cone}}
+\newcommand{\StComp}{\catfont{StablyComp}}
+\newcommand{\PosC}{\catfont{PosComp}}
+\newcommand{\Haus}{\catfont{Haus}}
+\newcommand{\Meas}{\catfont{Meas}}
+\newcommand{\Ord}{\catfont{Ord}}
+\newcommand{\TComp}{\catC_{\monadT,S}}
+\newcommand{\SetComp}{\Set_{\monadT,S}}
+% Functors
+\newcommand{\funfont}[1]{#1}
+\newcommand{\funF}{\funfont{F}}
+\newcommand{\funU}{\funfont{U}}
+\newcommand{\funG}{\funfont{G}}
+\newcommand{\funT}{\funfont{T}}
+\newcommand{\funI}{\funfont{I}}
+% Special functors
+\newcommand{\sfunfont}[1]{\mathrm{#1}}
+\newcommand{\sfunF}{\sfunfont{F}}
+\newcommand{\Pow}{\sfunfont{P}}
+\newcommand{\NPow}{\sfunfont{Q}}
+\newcommand{\Dist}{\sfunfont{D}}
+\newcommand{\Maybe}{\sfunfont{M}}
+\newcommand{\List}{\sfunfont{L}}
+\newcommand{\Forg}[1]{\sfunfont{U}_{#1}}
+\newcommand{\UForg}{\sfunfont{U}}
+\newcommand{\Id}{\sfunfont{Id}}
+\newcommand{\Vie}{\sfunfont{V}}
+\newcommand{\Disc}{\funfont{D}}
+\newcommand{\Weight}{\sfunfont{W}}
+\newcommand{\homf}{\sfunfont{hom}}
+\newcommand{\Yoneda}{\sfunfont{Y}}
+% Diagram functors
+\newcommand{\Diag}{\mathscr{D}}
+\newcommand{\KDiag}{\mathscr{K}}
+\newcommand{\LDiag}{\mathscr{L}}
+% Monads
+\newcommand{\monadfont}[1]{\mathbb{#1}}
+\newcommand{\monadT}{\monadfont{T}}
+\newcommand{\monadS}{\monadfont{S}}
+\newcommand{\monadU}{\monadfont{U}}
+\newcommand{\monadH}{\monadfont{H}}
+% Adjunctions
+\newcommand\adjunct[2]{\xymatrix@=8ex{\ar@{}[r]|{\top}\ar@<1mm>@/^2mm/[r]^{{#2}}
+& \ar@<1mm>@/^2mm/[l]^{{#1}}}}
+\newcommand\adjunctop[2]{\xymatrix@=8ex{\ar@{}[r]|{\bot}\ar@<1mm>@/^2mm/[r]^{{#2}}
+& \ar@<1mm>@/^2mm/[l]^{{#1}}}}
+% Retractions
+\newcommand\retract[2]{\xymatrix@=8ex{\ar@{}[r]|{}\ar@<1mm>@/^2mm/@{^{(}->}[r]^{{#2}}
+& \ar@<1mm>@/^2mm/@{->>}[l]^{{#1}}}}
+% Special sets
+\newcommand{\sconstrfont}[1]{\mathrm{#1}}
+\newcommand{\Sone}{\sconstrfont{1}}
+\newcommand{\Stwo}{\sconstrfont{2}}
+% Sets of numbers
+\newcommand{\Nats}{\mathbb{N}}
+\newcommand{\Reals}{\mathbb{R}}
+%\newcommand{\Rz}{\mathbb{R}_{\geq 0}}
+% Constructions
+%\newcommand{\pv}[2]{\langle #1, #2 \rangle}
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\curry}[1]{\overline{#1}}
+% Program Operations
+%\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\prog}[1]{\mathtt{#1}}
+\newcommand{\pskip}{\prog{\blue{skip}}}
+\newcommand{\ret}[1]{\prog{\blue{return}} \> #1}
+\newcommand{\pcomp}{\prog{ \> \blue{;} \>}}
+\newcommand{\pife}[3]{\prog{\blue{if} \>} #1 \prog{\> \blue{then} \> } #2
+\prog{\> \blue{else} \>} #3}
+\newcommand{\pwhile}[4]{(#1 \leftarrow #2) \pcomp \prog{\blue{while}} \> #3 \> \{ \> #4 \> \} }
+\newcommand{\pass}{\prog{\> \blue{:=} \>}}
+\newcommand{\lookup}{\prog{\> \blue{lookup_l}}}
+\newcommand{\pmlookup}[1]{\prog{\blue{lookup_#1}}}
+\newcommand{\slookup}{\prog{\> \blue{lookup}}}
+\newcommand{\mwrite}{\prog{\> \blue{write_{(l,v)}} \>}}
+\newcommand{\mmwrite}{\prog{\> \blue{write_{(l,v)}} \>}}
+\newcommand{\pmwrite}[1]{\prog{\blue{write_{#1}} \>}}
+
+\newcommand{\mswrite}{\prog{\> \blue{write} \>}}
+\newcommand{\pOp}[1]{\prog{\blue{#1}}}
+% Factorisations
+\newcommand{\EClass}{E}
+\newcommand{\MClass}{M}
+\newcommand{\MConeClass}{\mathcal{M}}
+% Misc
+\newcommand{\rnote}[1]{\textcolor{MidnightBlue}{[RN: #1]}}
+\newcommand{\pfs}{\hspace{0.2cm}}
+%\newcommand{\const}[1]{\underline{#1}}
+\newcommand{\blank}{\, - \,}
+%\newcommand{\comp}{\cdot}
+\newcommand{\df}[1]{\emph{\textbf{#1}}}
+\newcommand{\colim}{\mathrm{colim}}
+\newcommand{\limt}{\mathrm{lim}}
+\newcommand{\str}{\mathrm{str}}
+\newcommand{\inl}{\mathrm{inl}}
+\newcommand{\inr}{\mathrm{inr}}
+%\newcommand{\distr}{\mathrm{dist}}
+\newcommand{\sem}[1]{\llbracket #1 \rrbracket}
+\newcommand{\pullbackcorner}[1][dr]{\save*!/#1+1.2pc/#1:(1,-1)@^{|-}\restore}
+\newcommand{\pushoutcorner}[1][dr]{\save*!/#1-1.2pc/#1:(-1,1)@^{|-}\restore}
+%\DeclareMathOperator{\img}{\mathsf{im}}
+%\DeclareMathOperator{\dom}{\mathsf{dom}}
+\DeclareMathOperator{\codom}{\mathsf{codom}}
+\DeclareMathOperator{\ev}{\mathsf{ev}}
+%\DeclareMathOperator{\id}{\mathsf{id}}
+%\DeclareMathOperator{\st}{\mathsf{st}}
+% Abbreviations
+%\newcommand{\cf}{\emph{cf.}}
+%\newcommand{\ie}{\emph{i.e.}}
+%\newcommand{\eg}{\emph{e.g.}}
+% Textcolors
+%\newcommand{\red}[1]{\textcolor{red}{#1}}
+% Types
+\newcommand{\typefont}[1]{\mathbb{#1}}
+\newcommand{\typeOne}{1}
+\newcommand{\typeTwo}{2}
+\newcommand{\typeA}{\typefont{A}}
+\newcommand{\typeB}{\typefont{B}}
+\newcommand{\typeC}{\typefont{C}}
+\newcommand{\typeV}{\typefont{V}}
+\newcommand{\typeD}{\typefont{D}}
+% RuleName
+\newcommand{\rulename}[1]{\mathrm{#1}}
+% Terms
+\newcommand{\vljud}{\vdash}
+\newcommand{\cojud}{\vdash_{\mathtt{c}}}
+\newcommand{\stjud}{\vdash_{\mathtt{w}}}
+\newcommand{\vl}{\mathtt{v}}
+\newcommand{\co}{\mathtt{c}}
+
+% Terms
+\newcommand{\closVal}{\mathsf{Values}(\emptyset, \typeA)}
+\newcommand{\closTerm}{\mathsf{Terms}(\emptyset, \typeA)}
+\newcommand{\closValP}[1]{\mathsf{Values}(\emptyset, #1)}
+\newcommand{\closTermP}[1]{\mathsf{Terms}(\emptyset, #1)}
+
+% Components
+%\newcommand{\bcomp}{\prog{\blue{c}}}
+
+% Contextual equivalence
+\newcommand{\ctxeq}{\simeq_{\prog{ctx}}}
+
+\newcommand{\sigt}{sig$_\monadT$}

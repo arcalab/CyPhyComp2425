@@ -35,6 +35,8 @@ concurrent algorithms.
   | 25 mar. 2025 | Implementation of an operational semantics ([code](./hybridProgramming/MyLang.hs)) | 
   | 01 apr. 2025 | Hands-on approach to Lince ([code](./hybridProgramming/MyLang.hs)) | 
   | 03 apr. 2025 | Revisions | 
+  | 08 apr. 2025 | Introduction to the simply-typed lambda-calculus ([slides](./lambda_calc/lambdaCalc.pdf))| 
+  | 10 apr. 2025 | Continuation of the previous lecture ([slides](./lambda_calc/lambdaCalc.pdf))| 
 
 # Assessment
 

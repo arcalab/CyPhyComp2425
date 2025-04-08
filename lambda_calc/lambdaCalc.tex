@@ -1,0 +1,487 @@
+\documentclass{beamer}
+\usepackage{etex} % fixes new-dimension error
+\usepackage{lmodern}
+\input{macros/preamble}
+\input{macros/macros}
+\input{macros2}
+
+%-------------- template --------------------------------------------------
+\usetheme{metropolis}
+\metroset{block=fill}
+%\usetheme{Boadilla}
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertsection
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+\setbeamertemplate{navigation symbols}{}
+
+%----------------------------------------------------------------------------
+\usepackage{graphicx,amsmath}
+\usepackage{stmaryrd} % cf. interleave
+\usepackage{booktabs}
+\usepackage{amscd}
+\usepackage{multicol}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{alltt}
+\usepackage{proof}
+%------ using xy ------------------------------------------------------------
+\usepackage[all]{xy}
+%\def\larrow#1#2#3{\xymatrix{ #3 & #1 \ar[l] _-{#2} }}
+\def\larrow#1#2#3{\xymatrix{ #3 & #1 \ar[l] _--{#2} }}
+\def\rarrow#1#2#3{\xymatrix{ #1 \ar[r]^-{#2} & #3 }}
+\def\arLaw#1#2#3#4#5{
+\xymatrix{
+        #1      \ar@/^1pc/[rr]^-{#4} &
+        #5 &
+        #2      \ar@/^1pc/[ll]^-{#3}
+}}
+\def\arLeq#1#2#3#4{\arLaw{#1}{#2}{#3}{#4}\leq}
+%------ using pstricks (rnode etc) ------------------------------------------
+\usepackage{pstricks,pst-node,pst-text,pst-3d}
+%------ using color ---------------------------------------------------------
+
+\newrgbcolor{goldenrod}{.80392 .60784 .11373}
+\newrgbcolor{darkgoldenrod}{.5451 .39608 .03137}
+\newrgbcolor{brown}{.15 .15 .15}
+\newrgbcolor{darkolivegreen}{.33333 .41961 .18431}
+%
+%
+\def\gold#1{{\goldenrod #1}}
+% \def\dgold#1{{\darkgoldenrod #1}}
+\def\dgold#1{{\alert{#1}}}
+%\def\brw#1{{\brown #1}}
+\def\dkb#1{{\blue #1}}
+\def\tdkb#1{\textbf{\darkblue #1}}
+%%\def\gre#1{{\green #1}}
+\def\gre#1{{\darkolivegreen #1}}
+\def\gry#1{{\gray #1}}
+\def\rdb#1{{\red #1}}
+\def\st{\mathbf{.}\,}
+\def\laplace#1#2{*\txt{\mbox{ \fcolorbox{black}{myGray}{$\begin{array}{c}\mbox{#1}\\\\#2\\\\\end{array}$} }}}
+%\newcommand{\galois}[2]{#1\; \dashv\; #2}
+
+\def\eqm{\mathbin{\equiv}}                     
+\def\noeqm{\mathbin{\not\!\equiv}}  
+%\newcommand{\flam}[2]{\lambda_{#1}\; .\; #2}
+\def\existential#1#2{\exists_{#1}\;.\; #2}
+\def\existencial#1#2{\exists_{#1}\;.\; #2}
+
+\def\pv#1#2{\langle #1 \rangle #2}
+\def\nc#1#2{[#1]#2}
+\def\pvo#1#2{\langle \! \! \! \langle #1 \rangle \! \! \! \rangle\, #2}
+\def\nco#1#2{\llbracket #1 \rrbracket #2}
+\def\cvg#1{\llbracket \downarrow \rrbracket #1}
+\def\cvgr#1#2{\llbracket #1 \downarrow \rrbracket #2}
+\def\cvgl#1#2{\llbracket \downarrow  #1 \rrbracket #2}
+\def\cvglr#1#2{\llbracket \downarrow  #1 \downarrow \rrbracket #2}
+\def\lfp#1#2{\mu {#1}\, .\, {#2}}
+\def\lpf#1#2{\mu {#1}\, .\, {#2}}
+\def\gfp#1#2{\nu {#1}\, .\, {#2}}
+\def\gpf#1#2{\nu {#1}\, .\, {#2}}
+\def\mset#1{\vvv #1 \vvv}
+\def\vvv{\vert \! \vert}
+\def\mnc#1{\vvv [#1] \vvv}
+\def\mpv#1{\vvv \langle #1 \rangle \vvv}
+\def\bcomp#1{#1^{\text{c}}}
+\def\eqm{\mathbin{\simeq}}
+\def\noeqm{\mathbin{\not\!\simeq}}
+\def\universal#1#2{\forall_{#1}\;.\; #2}
+\def\existential#1#2{\exists_{#1}\;.\; #2}
+\def\oexistential#1#2{\exists^{1}_{#1}\;.\; #2}
+\def\MM{\mathcal{M}}
+\def\uppaal{\textsc{Uppaal}}
+\def\cc#1{\mathcal{C}(#1)}
+\def\R{\mathcal{R}}
+\def\TL#1{\mathcal{T}(#1)}
+\def\HL#1{\mathcal{H}(#1)}
+\def\ET#1{\mathsf{ExecTime(#1)}}
+\newcommand\mdoubleplus{\mathbin{+\mkern-10mu+}}
+
+\AtBeginSection[]
+{
+    \begin{frame}
+        \frametitle{Table of Contents}
+        \tableofcontents[currentsection]
+    \end{frame}
+}
+
+% context
+\AtBeginSection[]
+{
+    \begin{frame}
+        \frametitle{Table of Contents}
+        \tableofcontents[currentsection]
+    \end{frame}
+}
+\author[Renato Neves]{Renato Neves}
+
+% logos of institutions
+\titlegraphic{
+  \begin{textblock*}{5cm}(6.7cm,7.57cm)
+     \includegraphics[scale=0.05525]{./images/uminho.png}
+  \end{textblock*}
+  \begin{textblock*}{5cm}(9.4cm,7.57cm)
+    \includegraphics[scale=0.50]{./images/haslab.pdf}
+  \end{textblock*}
+}
+
+% No date
+\date{}
+
+
+\begin{document}
+
+\title{Simply Typed Lambda-calculus}
+
+\frame[plain]{\titlepage}
+
+\section{The Calculus} 
+
+\begin{frame}{Deductive Reasoning}
+
+  \begin{block}{The essence}
+          Knowledge obtained via \alert{\underline{assumptions}} and
+          \alert{\underline{logical rules}}
+  \end{block}
+
+  \pause
+  \bigskip
+  Studied since Aristotle  \dots
+
+  \dots \, long before the age of \alert{\underline{artificial}} computers
+
+  What does it have to do with programming ?
+\end{frame}
+
+\begin{slide}{A Basic Deductive System}
+  \begin{minipage}[0.3\textheight]{\textwidth}
+  \begin{columns}[c]
+  \begin{column}{0.5\textwidth}
+          $\typeA,\typeB \dots$ denote \alert{\underline{propositions}}
+          and $\typeOne$ a proposition that always holds   
+  \end{column}
+  \begin{column}{0.45\textwidth}
+        \includegraphics[scale=0.2]{images/gentzen.jpg}
+        \includegraphics[scale=0.16]{images/prawitz.jpg}
+  \end{column}
+  \end{columns}
+  \end{minipage}
+
+  If $\typeA$ and $\typeB$ are propositions then
+  \begin{itemize}
+    \item $\typeA \times \typeB$ is a proposition -- 
+        conjunction of $\typeA$ and $\typeB$
+    \item $\typeA \to \typeB$ is a proposition -- 
+            implication of $\typeB$ from $\typeA$
+  \end{itemize}
+  
+\end{slide}
+
+\begin{frame}{A Basic Deductive System}
+  
+  $\Gamma$ denotes a \alert{\underline{list of propositions}} (often called context)
+
+  $\Gamma \vljud \typeA$ reads \emph{``if the propositions in $\Gamma$ hold then  $\typeA$ also holds''}
+
+  \small{
+  \begin{flalign*}
+      \infer[(\rulename{ass})]{\Gamma \vljud \typeA}{\typeA \in \Gamma} \hspace{0.8cm}
+      \infer[(\rulename{trv})]{\Gamma \vljud  1}{}  \hspace{0.8cm}
+      \infer[(\rulename{\pi_1})]{\Gamma \vljud \typeA}{\Gamma \vljud \typeA \times \typeB} \hspace{0.8cm}
+      \infer[(\rulename{\pi_2})]{\Gamma \vljud \typeB}{\Gamma \vljud \typeA \times \typeB}
+  \end{flalign*}
+  \begin{flalign*}
+      \infer[(\rulename{prd})]{\Gamma \vljud \typeA \times \typeB}
+      {\Gamma \vljud \typeA \qquad \Gamma \vljud \typeB} \hspace{0.4cm}
+      \infer[(\rulename{cry})]{\Gamma \vljud \typeA \to \typeB}{\Gamma, \typeA \vljud  \typeB}
+      \hspace{0.4cm}
+      \infer[(\rulename{app})]{\Gamma \vljud \typeB}
+      {\Gamma \vljud  \typeA \to \typeB \quad
+        \Gamma \vljud  \typeA}
+  \end{flalign*}
+        } 
+  
+  \bigskip
+  \begin{block}{Exercise}
+        Show that $\typeA \times \typeB \vdash \typeB \times \typeA$
+  \end{block}
+ 
+\end{frame}
+
+\begin{slide}{New Knowledge From Old}
+  The rules below are \alert{\underline{derivable}} from the previous system
+
+  \begin{flalign*}
+      \infer[\text{(exchange)}]{\Gamma, \typeB, \typeA,\Delta \vljud \typeC}{
+      \Gamma, \typeA, \typeB,\Delta \vljud \typeC}
+      \hspace{2cm}
+      \infer[\text{(weakening)}]{\Gamma,\typeB \vljud \typeA}{\Gamma \vljud \typeA}
+  \end{flalign*}
+  \begin{flalign*}
+      \infer[\text{(cut elimination)}]{\Gamma\vljud \typeB}{
+      \Gamma, \typeA \vljud \typeB \qquad \Gamma \vljud \typeA}
+  \end{flalign*}
+
+ % Proofs (again) by an appeal to your old friend \dots\  \alert{\underline{induction}} :-)
+\end{slide}
+
+\begin{frame}{Exercises}
+  Derive the following judgements
+  \begin{itemize}
+          \item $\typeA \to \typeB,\typeB \to \typeC \vljud \typeA \to \typeC$ 
+          \item $\typeA \to \typeB,\typeA \to \typeC \vljud \typeA \to \typeB
+                  \times \typeC$
+  \end{itemize}        
+\end{frame}
+
+\begin{frame}[plain]
+
+        \begin{center}
+                Back to programming \dots
+        \end{center}
+\end{frame}
+\begin{slide}{The Bare Essentials of Programming}
+  We should think of
+  what are the \alert{\underline{basic features}} of programming \dots
+  \begin{itemize}
+  \item variables  
+  \item function application and creation
+  \item pairing \dots
+  \end{itemize}
+  and base our study on the \alert{\underline{simplest language}} with
+  such features \dots
+  \caixa{
+    \begin{center}
+        Simply-typed $\lambda$-calculus
+    \end{center}
+  }
+  \vfill
+  The basis of \alert{\texttt{\underline{Haskell}}}, \texttt{ML},
+  \texttt{Eff}, \texttt{F\#}, \texttt{Agda}, \texttt{Elm} and many
+  other programming languages
+\end{slide}
+
+\begin{frame}{Simply-typed $\lambda$-Calculus}
+
+  Types are defined by $\typeA ::= \typeOne \mid \typeA \times \typeA \mid \typeA
+  \to \typeA$
+
+  $\Gamma$ now a \alert{\underline{non-repetitive}} list of typed variables
+  ($x_1 : \typeA_1 \dots x_n : \typeA_n$)
+
+  Programs built according to the following \alert{\underline{deduction rules}}
+
+  \small{
+  \begin{flalign*}
+      \infer[(\rulename{ass})]{\Gamma \vljud x : \typeA}{x :
+        \typeA \in \Gamma} \hspace{1.2cm}
+      \infer[(\rulename{triv})]{\Gamma \vljud \ast : 1}{}  \hspace{1.2cm}
+      \infer[(\rulename{\pi_1})]{\Gamma \vljud \pi_1 \, t : \typeA }
+      {\Gamma \vljud t: \typeA \times \typeB}
+  \end{flalign*}
+  \begin{flalign*}
+     \infer[(\rulename{prd})]{\Gamma \vljud \langle t,s \rangle :
+        \typeA \times \typeB}
+      {\Gamma \vljud t: \typeA \qquad \Gamma \vljud s: \typeB} \hspace{1cm}
+      \infer[(\rulename{cry})]{\Gamma \vljud \lambda x : \typeA . \, t : \typeA
+        \to \typeB}
+      {\Gamma, x : \typeA \vljud t : \typeB}
+    \end{flalign*}
+   \begin{flalign*}
+      \infer[(\rulename{app})]{\Gamma \vljud t \, s : \typeB}
+      {\Gamma \vljud  t : \typeA \to \typeB \quad
+        \Gamma \vljud  s : \typeA}
+    \end{flalign*}
+   }
+\end{frame}
+
+\begin{slide}{Examples of $\lambda$-terms}
+  \begin{flalign*}
+          & x : \typeA \vljud x : \typeA && \text{(identity)}
+          \\[15pt]
+          & x : \typeA \vljud \langle x, x \rangle : \typeA \times \typeA
+          && \text{(duplication)} 
+          \\[15pt]
+          & x : \alert{\typeA \times \typeB}
+          \vljud \langle \pi_2\ x , \pi_1\ x \rangle : \alert{ \typeB \times \typeA }
+          && \text{(swap)}
+          \\[15pt]
+          & f : \alert{\typeA \to \typeB}, g : \alert{\typeB \to \typeC} \vljud
+          \lambda x : \typeA . \> g (f \> x) : \alert{\typeA \to \typeC}
+          && \text{(composition)}
+  \end{flalign*}
+\end{slide}
+
+\begin{frame}{Exercises}
+
+    Recall the derivations that lead to the judgement
+    \[
+      \typeA \to \typeB,  \typeA \to \typeC \vljud  \typeA 
+      \to \typeB \times \typeC
+    \]
+    Build the corresponding program
+
+    \bigskip
+    Derive as well the judgement 
+    \[
+        \typeA \to \typeB \vljud  \typeA  \times \typeC
+        \to \typeB \times \typeC
+    \]
+    and subsequently build the corresponding program
+\end{frame}
+
+\section{Denotational Semantics}
+
+\begin{slide}{A Semantics for Simply Typed $\lambda$-calculus}
+  We wish to assign a \alert{\underline{mathematical meaning}} to $\lambda$-terms
+  \begin{flalign*}
+    \sem{-} \, : \lambda\text{-terms} \longrightarrow ...
+  \end{flalign*}
+  so that we can reason about them rigorously, and take advantage
+  of known mathematical theories
+  \vfill \pause
+  
+  This is the goal of the next slides. But first \dots
+\end{slide}
+
+\begin{slide}{Functions: Basic Facts}
+
+  For every set $X$ there exists a `trivial' function
+  \begin{flalign*}
+    ! : X \longrightarrow \{ \star \} = 1 \hspace{1cm} ! \, (x) = \star
+  \end{flalign*}
+
+  We can always pair two functions into
+  $f : X \to A$, $g : X \to B$
+  \begin{flalign*}
+    \pv{f,g} : X \to A \times B \hspace{1cm} \pv{f,g}(x) = (f \> x, g \> x)
+  \end{flalign*}
+
+  There exist projection functions
+  \begin{flalign*}
+    \pi_1 : X \times Y \to X  \hspace{1cm} \pi_1(x,y) = x \\
+    \pi_2 : X \times Y \to Y  \hspace{1cm} \pi_2(x,y) = y
+  \end{flalign*}
+\end{slide}
+
+\begin{slide}{Functions: Basic Facts}
+
+  We can always `curry' a function $f : X \times Y \to Z$ into
+  \begin{flalign*}
+    \lambda f : X \to Z^Y \hspace{1cm} \lambda f (x) = (y \mapsto f(x,y))
+  \end{flalign*}
+
+  Consider sets $X,Y, Z$. There exists an application function
+  \begin{flalign*}
+    \mathrm{app} : Z^Y  \times Y \to Z \hspace{1cm}
+    \mathrm{app}(f,y) = f \> y
+  \end{flalign*}
+\end{slide}
+
+\begin{slide}{Denotational Semantics}
+  Types $\typeA$ interpreted as \alert{\underline{sets}} $\sem{\typeA}$
+  \begin{flalign*}
+    \sem{1} & = \{ \star \} \\
+    \sem{\typeA \times \typeB} & = \sem{\typeA} \times \sem{\typeB} \\
+   \sem{\typeA \to \typeB} & = \sem{\typeB}^{\sem{\typeA}} 
+ \end{flalign*}
+
+ Typing contexts $\Gamma$ interpreted as Cartesian products
+ \begin{flalign*}
+  \sem{\Gamma}\ = \sem{x_1 : \typeA_1, \dots, x_n : \typeA_n}\ =
+ \sem{\typeA_1} \times \dots \times \sem{\typeA_n} 
+ \end{flalign*}
+
+ $\lambda$-terms $\Gamma \vljud t : \typeA$ interpreted as \alert{\underline{functions}}
+ \begin{flalign*}
+   \sem{\Gamma \vljud t : \typeA}\ : \sem{\Gamma}\ \longrightarrow \sem{\typeA}
+ \end{flalign*}
+
+\end{slide}
+
+\begin{slide}{Denotational Semantics}
+  $\lambda$-term $\Gamma \vljud t : \typeA$ interpreted as a function
+ \begin{flalign*}
+   \sem{\Gamma \vljud t : \typeA}\ : \sem{\Gamma}\ \longrightarrow \sem{\typeA}
+ \end{flalign*}
+ \vspace{-0.5cm}
+ \small{
+   \begin{flalign*}
+      \infer[]{\sem{\Gamma \vljud x_i : \typeA} = \pi_i}{x_i :
+        \typeA \in \Gamma} \hspace{1.2cm}
+      \infer[]{\sem{\Gamma \vljud \ast : 1}\ =\ !}{}  \hspace{1.2cm}
+      \infer[]{\sem{\Gamma \vljud \pi_1 t : \typeA} = \pi_1 \comp f }
+      {\sem{\Gamma \vljud t : \typeA \times \typeB} = f}
+  \end{flalign*}
+  \begin{flalign*}
+      \infer[]{\sem{\Gamma \vljud \langle t,s \rangle :
+        \typeA \times \typeB}\ = \pv{f,g}}
+    {\sem{\Gamma \vljud t: \typeA}\ = f \qquad \sem{\Gamma \vljud s: \typeB}\ = g}
+    \hspace{0.3cm}
+     \infer[]{\sem{\Gamma \vljud \lambda x : \typeA . \, t : \typeA
+        \to \typeB}\ = \lambda f}
+      {\sem{\Gamma, x : \typeA \vljud t : \typeB}\ = f}
+    \end{flalign*}
+   \begin{flalign*}
+      \infer[]{\sem{\Gamma \vljud t \, s : \typeB}\ = \mathrm{app} \comp \pv{f,g}}
+      {\sem{\Gamma \vljud  t : \typeA \to \typeB}\ = f \quad
+        \sem{\Gamma \vljud  s : \typeA}\ = g}
+    \end{flalign*}
+}
+\end{slide}
+
+\begin{frame}{The Unravelling}
+        \begin{align*}
+                & \sem{x \vljud \pv{ \pi_2 \, x, \, \pi_1 \, x} } &  = \dots 
+                &
+                \\
+                & \sem{- \vljud \lambda x. \, \pv{ \pi_2 \, x, \, \pi_1 \, x} } & = \dots 
+                &
+                \\[10pt]
+                & \sem{f, g , x \vljud g \, f \, x} & = \dots
+                &
+                \\
+                & \sem{f, g \vljud \lambda x. \, g \, f \, x} & = \dots
+                &
+                \\[10pt]
+                & \sem{f, x \vljud \pv{f \, \pi_1 \, x, \, \pi_2 \, x} \, } & = \dots
+                &
+                \\
+                & \sem{f \vljud \lambda x. \, \pv{f \, \pi_1 \, x, \, \pi_2 \, x} \, } & = \dots
+                &
+                \\
+                & \sem{- \vljud \lambda f. \, \lambda x. \, \pv{f \, \pi_1 \,
+                x, \, \pi_2 \, x} \, } & = \dots &
+        \end{align*}
+        \vfill
+        \begin{center}
+                (\scriptsize{\textbf{N.B.} all types omitted for simplicity})
+        \end{center}
+\end{frame}
+\begin{slide}{More exercises}
+  Show that the following equations hold
+  \begin{flalign*}
+    \sem{x, y \vljud \pi_1 \pv{x,y}}\ & =\
+    \sem{x , y \vljud x } \\[5pt]
+    \sem{\Gamma \vljud t}\ & =\
+    \sem{\Gamma \vljud \langle \pi_1\ t, \pi_2\ t \rangle }
+    \\[5pt]
+    \sem{ x \vljud (\lambda y. \, \pv{x,y})\>  \> x  }\,
+                                    & =\
+                                    \sem{ x \vljud \pv{x,x}  }
+  \end{flalign*}
+\end{slide}
+
+\end{document}
