@@ -37,6 +37,7 @@ concurrent algorithms.
   | 03 apr. 2025 | Revisions | 
   | 08 apr. 2025 | Introduction to the simply-typed lambda-calculus ([slides](./lambda_calc/lambdaCalc.pdf))| 
   | 10 apr. 2025 | Continuation of the previous lecture ([slides](./lambda_calc/lambdaCalc.pdf))| 
+  | 22 apr. 2025 | Lambda-calculus with effects ([slides](./lambda_calc/stlcE.pdf))| 
 
 # Assessment
 
