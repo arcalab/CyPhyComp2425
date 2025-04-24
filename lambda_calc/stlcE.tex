@@ -1,0 +1,874 @@
+\documentclass{beamer}
+\usepackage{etex} % fixes new-dimension error
+\usepackage{lmodern}
+\input{macros/preamble}
+\input{macros/macros}
+\input{macros2}
+
+%-------------- template --------------------------------------------------
+\usetheme{metropolis}
+\metroset{block=fill}
+%\usetheme{Boadilla}
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertsection
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+%----------------------------------------------------------------------------
+\usepackage{graphicx,amsmath}
+\usepackage{stmaryrd} % cf. interleave
+\usepackage{booktabs}
+\usepackage{amscd}
+\usepackage{multicol}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{alltt}
+\usepackage{proof}
+%------ using xy ------------------------------------------------------------
+\usepackage[all]{xy}
+%\def\larrow#1#2#3{\xymatrix{ #3 & #1 \ar[l] _-{#2} }}
+\def\larrow#1#2#3{\xymatrix{ #3 & #1 \ar[l] _--{#2} }}
+\def\rarrow#1#2#3{\xymatrix{ #1 \ar[r]^-{#2} & #3 }}
+\def\arLaw#1#2#3#4#5{
+\xymatrix{
+        #1      \ar@/^1pc/[rr]^-{#4} &
+        #5 &
+        #2      \ar@/^1pc/[ll]^-{#3}
+}}
+\def\arLeq#1#2#3#4{\arLaw{#1}{#2}{#3}{#4}\leq}
+%------ using pstricks (rnode etc) ------------------------------------------
+\usepackage{pstricks,pst-node,pst-text,pst-3d}
+%------ using color ---------------------------------------------------------
+
+\newrgbcolor{goldenrod}{.80392 .60784 .11373}
+\newrgbcolor{darkgoldenrod}{.5451 .39608 .03137}
+\newrgbcolor{brown}{.15 .15 .15}
+\newrgbcolor{darkolivegreen}{.33333 .41961 .18431}
+%
+%
+\def\gold#1{{\goldenrod #1}}
+% \def\dgold#1{{\darkgoldenrod #1}}
+\def\dgold#1{{\alert{#1}}}
+%\def\brw#1{{\brown #1}}
+\def\tdkb#1{\textbf{\darkblue #1}}
+%%\def\gre#1{{\green #1}}
+\def\gre#1{{\darkolivegreen #1}}
+\def\gry#1{{\gray #1}}
+\def\rdb#1{{\red #1}}
+\def\st{\mathbf{.}\,}
+\def\laplace#1#2{*\txt{\mbox{ \fcolorbox{black}{myGray}{$\begin{array}{c}\mbox{#1}\\\\#2\\\\\end{array}$} }}}
+%\newcommand{\galois}[2]{#1\; \dashv\; #2}
+
+\def\eqm{\mathbin{\equiv}}                     
+\def\noeqm{\mathbin{\not\!\equiv}}  
+%\newcommand{\flam}[2]{\lambda_{#1}\; .\; #2}
+\def\existential#1#2{\exists_{#1}\;.\; #2}
+\def\existencial#1#2{\exists_{#1}\;.\; #2}
+
+\def\pv#1#2{\langle #1 \rangle #2}
+\def\nc#1#2{[#1]#2}
+\def\pvo#1#2{\langle \! \! \! \langle #1 \rangle \! \! \! \rangle\, #2}
+\def\nco#1#2{\llbracket #1 \rrbracket #2}
+\def\cvg#1{\llbracket \downarrow \rrbracket #1}
+\def\cvgr#1#2{\llbracket #1 \downarrow \rrbracket #2}
+\def\cvgl#1#2{\llbracket \downarrow  #1 \rrbracket #2}
+\def\cvglr#1#2{\llbracket \downarrow  #1 \downarrow \rrbracket #2}
+\def\lfp#1#2{\mu {#1}\, .\, {#2}}
+\def\lpf#1#2{\mu {#1}\, .\, {#2}}
+\def\gfp#1#2{\nu {#1}\, .\, {#2}}
+\def\gpf#1#2{\nu {#1}\, .\, {#2}}
+\def\mset#1{\vvv #1 \vvv}
+\def\vvv{\vert \! \vert}
+\def\mnc#1{\vvv [#1] \vvv}
+\def\mpv#1{\vvv \langle #1 \rangle \vvv}
+\def\bcomp#1{#1^{\text{c}}}
+\def\eqm{\mathbin{\simeq}}
+\def\noeqm{\mathbin{\not\!\simeq}}
+\def\universal#1#2{\forall_{#1}\;.\; #2}
+\def\existential#1#2{\exists_{#1}\;.\; #2}
+\def\oexistential#1#2{\exists^{1}_{#1}\;.\; #2}
+\def\MM{\mathcal{M}}
+\def\uppaal{\textsc{Uppaal}}
+\def\cc#1{\mathcal{C}(#1)}
+\def\R{\mathcal{R}}
+\def\TL#1{\mathcal{T}(#1)}
+\def\HL#1{\mathcal{H}(#1)}
+\def\ET#1{\mathsf{ExecTime(#1)}}
+\newcommand\mdoubleplus{\mathbin{+\mkern-10mu+}}
+
+\AtBeginSection[]
+{
+    \begin{frame}
+        \frametitle{Table of Contents}
+        \tableofcontents[currentsection]
+    \end{frame}
+}
+
+\author{Renato Neves}
+
+% logos of institutions
+\titlegraphic{
+  \begin{textblock*}{5cm}(6.7cm,7.57cm)
+     \includegraphics[scale=0.05525]{./images/uminho.png}
+  \end{textblock*}
+  \begin{textblock*}{5cm}(9.4cm,7.57cm)
+    \includegraphics[scale=0.50]{./images/haslab.pdf}
+  \end{textblock*}
+}
+
+% No date
+\date{}
+
+\begin{document}
+
+\title{Algebraic Lambda-calculus}
+
+\frame[plain]{\titlepage}
+
+\section{Background}
+
+\begin{slide}{Recalling Lambda-calculus}
+  \begin{flalign*}
+      \infer[]{\Gamma \vljud x : \typeA}{x :
+        \typeA \in \Gamma} \hspace{2cm}
+      \infer[]{\Gamma \vljud \ast : 1}{}  \hspace{2cm}
+      \infer[]{\Gamma \vljud \pi_1 \, v : \typeA }
+      {\Gamma \vljud v: \typeA \times \typeB}
+  \end{flalign*}
+  \begin{flalign*}
+      \infer[]{\Gamma \vljud \langle v,u \rangle :
+        \typeA \times \typeB}
+      {\Gamma \vljud v: \typeA \qquad \Gamma \vljud u: \typeB} \hspace{2cm}
+     \infer[]{\Gamma \vljud \lambda x : \typeA . \, v : \typeA
+        \to \typeB}
+      {\Gamma, x : \typeA \vljud v : \typeB}
+    \end{flalign*}
+   \begin{flalign*}
+      \infer[]{\Gamma \vljud v \, u : \typeB}
+      {\Gamma \vljud  v : \typeA \to \typeB \quad
+        \Gamma \vljud  u : \typeA}
+    \end{flalign*}
+
+\end{slide}
+\begin{slide}{Sequential Composition Revisited}
+  A ``native'' deductive rule
+  \begin{flalign*}
+    \infer{\Gamma \vljud x \leftarrow v ; u : \typeB}{
+      \Gamma \vljud v : \typeA \qquad x : \typeA \vljud u : \typeB}
+  \end{flalign*}
+  It reads \emph{``bind the computation $v$ to $x$ and then run $u$''}
+
+  \vfill
+  Interpretation is defined as
+  \begin{flalign*}
+    \infer{\sem{\Gamma \vljud x \leftarrow v; u : \typeB}\ = g \comp f}{
+      \sem{\Gamma \vljud v : \typeA}\ = f \qquad
+      \sem{x : \typeA \vljud u : \typeB}\ = g}
+  \end{flalign*}
+
+\end{slide}
+\section{Algebraic Operations in Lambda-calculus}
+\begin{slide}{Signatures}
+  \begin{block}{Signature}
+        A set  $\Sigma = \{ (\sigma_1,n_1), (\sigma_2,n_2), \dots \}$ of
+        operations $\sigma_i$ paired with the \alert{\underline{number}} of
+        inputs $n_i$ they are supposed to receive
+  \end{block}
+  
+  These constitute the aforementioned \alert{\underline{algebraic operations}}
+
+  \vfill
+  \begin{block}{Examples}
+    \begin{itemize}
+    \item Exceptions : $\{ (\mathrm{e},0) \}$
+    \item Read a bit from the environment : $\{ (\mathrm{read},2) \}$
+    \item \alert{\underline{Wait calls}} : 
+            $\{ (\mathrm{wait}_n, 1) \mid n \in \mathbb{N} \}$
+    \item Non-deterministic choice : $\{ (\mathrm{+},2) \}$
+    \item \alert{\underline{Continuous trajectories}} : \dots
+    \end{itemize}
+  \end{block}
+\end{slide}
+
+
+\begin{slide}{Algebraic Operations in Lambda-calculus}
+  We take a signature $\Sigma$ of operations
+  and introduce a new rule
+
+  \begin{flalign*}    
+      \infer[]{\Gamma \vljud \sigma(m_1,\dots,m_n) : \typeA}
+      {(\sigma,n) \in \Sigma \qquad \forall 1 \leq i \leq n. \,
+      \> \Gamma \vljud m_i : \typeA}
+    \end{flalign*}
+\end{slide}
+
+\begin{slide}{Examples}
+  \begin{itemize}
+          \item $x : \typeA \vljud \mathrm{wait}_1(x) : \typeA $ -- adds
+                \alert{\underline{delay}} of one second to returning $x$
+                \\[20pt]
+          \item $\Gamma \vljud \mathrm{e}() : \typeA$ -- raises an 
+                \alert{\underline{exception}} $e$
+                \\[20pt]
+          \item $\Gamma \vljud \mathrm{write}_v(m) : \typeA$ -- writes 
+                $v$ in \alert{\underline{memory}} and then runs $m$
+                \\[20pt]
+          \item $x : \typeA \times \typeA \vljud \mathrm{read}(\pi_1 \> x,
+                  \pi_2 \> x) : \typeA$ -- \alert{\underline{receives}} a bit:
+                  if $0$ returns $\pi_1 \> x$ and $\pi_2 \> x$ otherwise
+  \end{itemize}
+\end{slide}
+
+\begin{frame}{Exercise}
+
+    Define a $\lambda$-term with variable $x$ that requests a bit from the user
+    and depending on the value read it returns $x$ with either one or two
+    seconds of delay.
+
+\end{frame}
+
+\section{Semantics}
+
+\begin{slide}{The Million-Dollar Question}
+
+  How to provide semantics to such programming languages ?
+
+  The short answer: via \alert{\underline{monads !!}}
+
+  The long answer: see the next slides :-) \dots
+
+\end{slide}
+
+\begin{slide}{The Core Idea}
+  Programs $\Gamma \vljud v  : \typeA$ interpreted as functions
+  \begin{flalign*}
+    \sem{\Gamma \vljud v : \typeA}\ : \sem{\Gamma}\ \longrightarrow \sem{\typeA}
+  \end{flalign*}
+
+  \dots\ and there exists \alert{\underline{only one}} function of type
+  \begin{flalign*}
+   \sem{\Gamma}\ \longrightarrow \sem{1}
+  \end{flalign*}
+
+  \alert{\underline{Problem}}: it is then necessarily the case that
+  \begin{flalign*}
+    \sem{\Gamma \vljud x : \typeOne}\ = \sem{\Gamma \vljud
+      \mathrm{wait_1}(x) : \typeOne}
+  \end{flalign*}
+  despite these programs having different execution times
+\end{slide}
+
+
+\begin{slide}{The Core Idea}
+ Interpreted $\Gamma \vljud v : \typeA$ as a function
+ \begin{flalign*}
+   \sem{\Gamma \vljud v : \typeA}\ : \sem{\Gamma}\ \longrightarrow \sem{\typeA}
+ \end{flalign*}
+ But values now come with effects \dots
+
+ Instead of having $\sem{\typeA}$ as set of outputs, we will have
+ a set $T\sem{\typeA}$ of \alert{\underline{effectful values}} 
+ \begin{flalign*}
+   \sem{\Gamma \vljud m : \typeA}\ : \sem{\Gamma}\ \longrightarrow T\sem{\typeA}
+ \end{flalign*}
+
+ $T$ should thus be a \alert{\underline{set-constructor}}: given a set of
+ outputs $X$ it returns a set of effectful values $T X$ over $X$
+\end{slide}
+
+\begin{slide}{Examples}
+  For wait calls, the corresponding set-constructor $T$ is defined as
+  \begin{flalign*}
+    X \mapsto \mathbb{N} \times X
+  \end{flalign*}
+  \ie\ values in $X$ paired with an \alert{\underline{execution time}}
+  \vfill
+  For exceptions, the corresponding set-constructor $T$ is defined as
+  \begin{flalign*}
+    X \mapsto X + \{ e \}
+  \end{flalign*}
+  \ie\ values in $X$ plus an element $e$ \alert{\underline{representing 
+  the exception}}
+\end{slide}
+
+\begin{slide}{Another Problem}
+  This idea of a set-constructor $T$ looks good, but  \dots\
+
+  \dots\ it breaks sequential composition
+  \begin{flalign*}
+    \sem{\Gamma \vljud m : \typeA}\ &:\ \sem{\Gamma}\ \, \longrightarrow
+    \alert{T\sem{\typeA}} \\
+    \sem{x : \typeA \vljud n : \typeB}\ & :\ \alert{\sem{\typeA}}\ 
+    \longrightarrow T\sem{\typeB}
+  \end{flalign*}
+    
+  \medskip
+  \pause
+  We'll need convert a function $h : X \to TY$ into one of type
+  \begin{flalign*}
+    h^\star : TX \to TY
+  \end{flalign*}
+\end{slide}
+
+\begin{slide}{Examples}
+
+  There are set-constructors $T$ for which this is possible
+
+  \vspace{0.5cm}
+  In the case of \alert{\underline{wait-calls}}
+  \begin{flalign*}
+    \infer{f^\star(n,x) = (n+m,y) \text{ where } f(x) = (m,y)}
+    {f : X \to TY = \mathbb{N} \times Y}
+  \end{flalign*}
+
+  \vspace{0.5cm}
+  In the case of \alert{\underline{exceptions}}
+  \begin{flalign*}
+      \infer{f^\star(x) = f (y) \qquad f^\star(e) = e}{f : X \to TY = Y + \{e\}}
+  \end{flalign*}
+\end{slide}
+
+\begin{slide}{Testing the Idea\ \dots}
+  \begin{flalign*}
+   & \, \sem{x : \typeOne \vljud y \leftarrow \mathrm{wait_1}(x) ;
+   \mathrm{wait_2}(y) : \typeOne} \\[0.2cm]
+   & =\  \sem{ y : \typeOne \vljud \mathrm{wait_2}(y) : \typeOne }^\ast\ \comp\
+   \sem{x : \typeOne \vljud \mathrm{wait_1}(x) : \typeOne} \\[0.2cm]
+   & =\ (v \mapsto (2,v))^\ast\ \comp\ (v \mapsto (1,v)) \\[0.2cm]
+   & =\ v \mapsto (3,v)
+  \end{flalign*}
+\end{slide}
+
+\begin{slide}{Yet Another Problem}
+
+  Idea of interpreting $\lambda$-terms $\Gamma \vljud m : \typeA$ as functions
+  \begin{flalign*}
+   \sem{\Gamma \vljud m : \typeA}\ : \sem{\Gamma}\ \longrightarrow T\sem{\typeA}
+  \end{flalign*}
+  looks good but it presupposes that all terms invoke
+  effects
+
+  \vfill
+  Some terms do not do this, \eg\
+  \begin{flalign*}
+    \sem{x: \typeA \vljud x : \typeA}\ : \sem{\typeA}\ \longrightarrow \sem{\typeA}
+  \end{flalign*}
+
+  \begin{block}{Solution}
+   $T\sem{\typeA}$ should include \alert{\underline{effect-free}} values, 
+   and we should have 
+   \begin{flalign*}
+    \eta_{\sem{\typeA}} : \sem{\typeA}\ \longrightarrow T\sem{\typeA}
+   \end{flalign*}
+   which maps a value to its effect-free representation
+  \end{block}  
+\end{slide}
+
+\begin{slide}{Examples}
+
+  In the case of \alert{\underline{wait-calls}}
+  \begin{flalign*}
+    \infer{\eta_X (x) = (0,x)}
+    {TX = \mathbb{N} \times X}
+  \end{flalign*}
+  (\ie\ no wait call invoked)
+  
+  \vspace{1cm}
+  In the case of \alert{\underline{exceptions}}
+  \begin{flalign*}
+      \infer{\eta_X (x) = x}{TX = X + \{e\}}
+  \end{flalign*}
+  (\ie\ no exception $e$ raised) 
+
+\end{slide}
+
+\begin{slide}{Monads Unlocked !!}
+  Previous analysis leads to the notion of a \alert{\underline{monad}}
+
+  \smallskip
+  \begin{block}{Monad}
+    Triple $(T,\eta,(-)^\star)$ where $T$ is a
+    set-constructor, $\eta$ a function
+    $\eta_X : X \to TX$ for each set $X$, and $(-)^\star$
+    an operation
+    \begin{flalign*}
+      \infer{f^\star : TX \to TY}{f : X \to TY}
+    \end{flalign*}
+    s.t. the following laws hold:
+    $\eta^{\star}=\id$, %&&
+    $f^{\star}\comp \eta=f$, %&&
+    $(f^{\star} \comp g)^{\star}=f^{\star} \comp g^{\star}$
+  \end{block}
+
+  {\small These laws are required to forbid ``weird''
+  computational behaviour}
+\end{slide}
+
+\begin{slide}{Exercises}
+  Show that the set-constructor
+  \begin{flalign*}
+    X \mapsto \mathbb{N} \times X
+  \end{flalign*}
+  can be equipped with a monadic structure
+  \vfill
+  
+  Show that the set-constructor
+  \begin{flalign*}
+    X \mapsto X + 1
+  \end{flalign*}
+  can be equipped with a monadic structure
+\end{slide}
+
+\begin{slide}{Exercises}
+  Show that the set-constructor
+  \begin{flalign*}
+    X \mapsto \{ U \mid U \subseteq X \}
+  \end{flalign*}
+  can be equipped with a monadic structure
+  \vfill
+  
+  Show that the set-constructor
+  \begin{flalign*}
+          X \mapsto \{ \mu \mid \mu : X \to [0,1] \text{ a distribution} \}
+  \end{flalign*}
+  can be equipped with a monadic structure
+\end{slide}
+
+
+\begin{frame}{To Keep In Mind}
+ Recall that,
+  \begin{itemize}
+  \item we fixed a signature $\Sigma$ of algebraic operations
+  \item we now have monads at our disposal
+  \item Programs $\Gamma \vljud v : \typeA$ can be seen either as
+    functions of type $\sem{\Gamma}\ \to \sem{\typeA}$ or of 
+    type $\sem{\Gamma}\ \to T\sem{\typeA}$
+  \end{itemize}
+\end{frame}
+
+\begin{slide}{Semantics}
+ Types $\typeA$ interpreted as sets $\sem{\typeA}$
+ \begin{flalign*}
+    \sem{1}\ = \{ \star \} \hspace{.7cm}
+    \sem{\typeA \times \typeB}\ = \sem{\typeA} \times \sem{\typeB} \hspace{0.7cm}
+   \sem{\typeA \to \typeB}\ = (T\sem{\typeB})^{\sem{\typeA}} 
+ \end{flalign*}
+ \vfill
+ Typing contexts $\Gamma$ interpreted as
+ \begin{flalign*}
+  \sem{\Gamma}\ = \sem{x_1 : \typeA_1, \dots ,x_n : \typeA_n}\ =
+ \sem{\typeA_1} \times \dots \times \sem{\typeA_n} 
+ \end{flalign*}
+ \vfill
+ For each $(\sigma,n) \in \Sigma$ and set $X$ we postulate
+ the existence of a map
+ \begin{flalign*}
+   \sem{\sigma}_X \, : (TX)^n \longrightarrow TX
+ \end{flalign*}
+\end{slide}
+
+
+\begin{slide}{Semantics}
+  \footnotesize
+   \begin{flalign*}
+    \infer{\sem{\Gamma \vljud x_i}\ = \pi_i}{x_i : \typeA \in \Gamma}
+    \hspace{1cm}
+    \infer{\sem{\Gamma \vljud \ast}\ = \> !}{}
+    \hspace{1cm}
+    \infer{\sem{\Gamma \vljud \langle v, u \rangle : \typeA \times \typeB}\ = \pv{f,g}}
+    {\sem{\Gamma \vljud v : \typeA} = f \qquad \sem{\Gamma \vljud u : \typeB}\ = g}
+  \end{flalign*}
+  \begin{flalign*}
+       \infer[]{\sem{\Gamma \vljud \lambda x : \typeA . \, m : \typeA
+        \to \typeB}\ = \lambda f}
+    {\sem{\Gamma, x : \typeA \cojud m : \typeB}\ = f} \hspace{2cm}
+          \infer[]{\sem{\Gamma \vljud \pi_1 \, v : \typeA}\ = \pi_1 \comp f }
+      {\sem{\Gamma \vljud v: \typeA \times \typeB}\ = f}
+  \end{flalign*}
+  \dotfill
+  \begin{flalign*}
+    \infer{\sem{\Gamma \cojud \ret v : \typeA}\ = \eta \comp f}
+    {\sem{\Gamma \vljud v : \typeA}\ = f} \hspace{1cm}
+    \infer{\sem{\Gamma \cojud x \leftarrow m \pcomp n : \typeB} = g^\star \comp f}
+    {\sem{\Gamma \cojud m : \typeA} = f \qquad \sem{x:\typeA \cojud n : \typeB} = g}
+  \end{flalign*}
+  \begin{flalign*}
+     \infer[]{\sem{\Gamma \cojud v \, u : \typeB}\ = \mathrm{app} \comp \pv{f,g}}
+     {\sem{\Gamma \vljud  v : \typeA \to \typeB}\ = f \quad
+     \sem{\Gamma \vljud  u : \typeA}\ = g} \\[2.5ex]
+     \infer{\sem{\Gamma \cojud \sigma(m_1, \dots m_n) : \typeA}\ = 
+     \sem{\sigma}_{\sem{\typeA}}
+     \, \comp \, \pv{f_1,\dots,f_n}}{(\sigma, n) \in \Sigma \qquad \forall 1 \leq i
+     \leq n . \> \sem{\Gamma \cojud m_i : \typeA} = f_i}
+  \end{flalign*}
+\end{slide}
+
+\section{Sharing Contexts}
+
+\begin{frame}{Exercise}
+  Build a $\lambda$-term that receives a function $f : \typeA \to
+  \typeA$, a value $x : \typeA$, and applies $f$ to $x$ twice
+
+  In classical $\lambda$-calculus such would be defined as
+  \begin{flalign*}
+    f : \typeA \to \typeA, x : \typeA \vljud f (f \> x) : 
+    \typeA
+  \end{flalign*}
+
+\end{frame}
+
+\begin{slide}{Sharing Contexts}
+  It will be useful to have two programs in sequential composition  that are
+  able share contexts
+
+  \vfill
+  I.e. it will be useful to have the following rule for seq. composition
+
+  \begin{flalign*}
+    \infer{\alert{\Gamma} \cojud x \leftarrow m \pcomp n : \typeB}
+    {\alert{\Gamma} \cojud m : \typeA \qquad \alert{\Gamma}, 
+    x:\typeA \cojud n : \typeB }
+  \end{flalign*}
+
+  \vfill
+  \pause
+  This would allow us to solve the previous exercise quite easily
+  \begin{flalign*}
+    f : \typeA \to \typeA, x : \typeA \cojud 
+    y \leftarrow f(x) \pcomp f(y) : \typeA
+  \end{flalign*}
+\end{slide}
+
+\begin{slide}{Sharing Contexts}
+  Natural way of interpreting the rule 
+    \begin{flalign*}
+    \infer{\sem{\Gamma \cojud x \leftarrow m \pcomp n : \typeB}\ =  g^\star  \comp \pv{\id,f}}
+    {\sem{\Gamma \cojud m : \typeA}\ = f \qquad \sem{\Gamma, x:\typeA \cojud n : \typeB}\ = g }
+  \end{flalign*}
+  but $\pv{\id,f} : \sem{\Gamma}\ \to \alert{\sem{\Gamma} \times T\sem{\typeA}}$
+  and $g^\star : \alert{T(\sem{\Gamma} \times \sem{\typeA})} \to T\sem{\typeB}$
+  \vfill
+  Need to find a suitable function
+  \begin{flalign*}
+    \mathrm{str}:
+    \sem{\Gamma} \times T\sem{\typeA}\ 
+    \longrightarrow T(\sem{\Gamma} \times \sem{\typeA})
+  \end{flalign*}
+  \pause
+  \dots\ and there is actually a natural way of doing such !
+\end{slide}
+
+\begin{slide}{Tensorial Strength}
+  %
+  For every monad $T$ and function $f : X \to Y$ we can build
+  \begin{flalign*}
+    \alert{Tf = (\eta \comp f)^\star} : TX \to TY
+  \end{flalign*}
+
+  Moreover for every $x \in X$ we can define
+  \begin{flalign*}
+    \id_x : Y \to X \times Y, \quad \alert{y \mapsto (x,y)}
+  \end{flalign*}
+
+  From these we define the \alert{\underline{strength}} of $T$
+  \begin{flalign*}
+    \mathrm{str} : X \times TY \to T(X \times Y), \quad
+    \alert{(x,t) \mapsto (T \id_x) (t)}
+  \end{flalign*}
+  \begin{flalign*}
+    \infer{\sem{\Gamma \cojud x \leftarrow m \pcomp n : \typeB}\ =
+            g^\star \comp \alert{\mathrm{str}} 
+            \comp \pv{\id,f}} {\sem{\Gamma \cojud m : \typeA}\ = f
+      \qquad \sem{\Gamma, x:\typeA \cojud n : \typeB}\ = g }
+  \end{flalign*}
+  %
+\end{slide}
+
+\begin{slide}{Exercises}
+  Given an explicit definition for the tensorial strength of
+  \begin{itemize}
+  \item the monad of exceptions,
+  \item the monad of durations,
+  \item the powerset monad,
+  \item the distributions monad
+  \end{itemize}
+
+\end{slide}
+
+\begin{frame}{Exercises}
+  Consider the $\lambda$-term
+  \begin{flalign*}
+    f : \typeA \to \typeA, x : \typeA  \cojud
+    y \leftarrow f(x) \pcomp f(y) : \typeA 
+  \end{flalign*}
+  What is its execution time when
+  \begin{flalign*}
+   f \text{ is given by } (v \mapsto (1,v))
+  \end{flalign*}
+\end{frame}
+
+\begin{slide}{Semantics}
+    \footnotesize
+   \begin{flalign*}
+    \infer{\sem{\Gamma \vljud x_i}\ = \pi_i}{x_i : \typeA \in \Gamma}
+    \hspace{1cm}
+    \infer{\sem{\Gamma \vljud \ast}\ = \> !}{}
+    \hspace{1cm}
+    \infer{\sem{\Gamma \vljud \langle v, u \rangle : \typeA \times \typeB}\ = \pv{f,g}}
+    {\sem{\Gamma \vljud v : \typeA} = f \qquad \sem{\Gamma \vljud u : \typeB}\ = g}
+  \end{flalign*}
+  \begin{flalign*}
+       \infer[]{\sem{\Gamma \vljud \lambda x : \typeA . \, m : \typeA
+        \to \typeB}\ = \lambda f}
+    {\sem{\Gamma, x : \typeA \cojud m : \typeB}\ = f} \hspace{2cm}
+          \infer[]{\sem{\Gamma \vljud \pi_1 \, v : \typeA}\ = \pi_1 \comp f }
+      {\sem{\Gamma \vljud v: \typeA \times \typeB}\ = f}
+  \end{flalign*}
+  \dotfill
+  \begin{flalign*}
+    \infer{\sem{\Gamma \cojud \ret v : \typeA}\ = \eta \comp f}
+    {\sem{\Gamma \vljud v : \typeA}\ = f} \hspace{1cm}
+    \infer{\sem{\Gamma \cojud x \leftarrow m \pcomp n : \typeB} = g^\star \comp \str
+      \comp \pv{\id,f}}
+    {\sem{\Gamma \cojud m : \typeA} = f \qquad \sem{\Gamma, x:\typeA \cojud n : \typeB} = g}
+  \end{flalign*}
+  \begin{flalign*}
+     \infer[]{\sem{\Gamma \cojud v \, u : \typeB}\ = \mathrm{app} \comp \pv{f,g}}
+     {\sem{\Gamma \vljud  v : \typeA \to \typeB}\ = f \quad
+     \sem{\Gamma \vljud  u : \typeA}\ = g} \\[2.5ex]
+     \infer{\sem{\Gamma \cojud \sigma(m_1, \dots m_n) : \typeA}\ = \sem{\sigma}_{\sem{\typeA}}
+     \, \comp \, \pv{f_1,\dots,f_n}}{(\sigma, n) \in \Sigma \qquad \forall 1 \leq i
+     \leq n . \> \sem{\Gamma \cojud m_i : \typeA} = f_i}
+  \end{flalign*}
+
+\end{slide}
+
+
+%
+%\begin{slide}{Exercise}
+%  Use the interpretation rules to prove that
+%  the equations below hold
+%  \fontsize{7.7}{10}\selectfont % \scriptsize  
+%  \vspace{0.5cm}
+%
+%  \begin{flalign*}
+%    & \sem{\Gamma \vljud x \leftarrow \ret \ast \pcomp (\ret x) : \typeOne}\
+%    = \sem{\Gamma \vljud \ret \ast : \typeOne} \\ 
+%    & \text{ (hint: one of the monad laws)} \\[2ex]
+%    %
+%    & \sem{\Gamma \vljud x \leftarrow \mathrm{wait_1}(\ret \ast) \pcomp (\ret x) :
+%    \typeOne}\  =
+%    \sem{\Gamma \vljud x \leftarrow \ret \ast \pcomp \mathrm{wait_1}(\ret x)
+%    : \typeOne}\ \\
+%    & \text{ (hint: two of the monad laws) } \\[2ex]
+%    & \sem{\Gamma \vljud
+%      x \leftarrow \mathrm{wait_1}(\ret \ast) \pcomp \mathrm{wait_1}(\ret x) : \typeOne}\
+%    = \sem{\Gamma \vljud x \leftarrow \mathrm{wait_2}(\ret \ast) \pcomp (\ret x) : \typeOne}  \\
+%    & \text{ }
+%  \end{flalign*}
+%\end{slide}
+%
+%
+%\begin{slide}{Exercises}
+%  Build a $\lambda$-term that receives a value, waits one second, and
+%  returns the same value. Run this in \texttt{Haskell} using
+%  \texttt{DurationMonad.hs}. What is the value obtained when you feed this
+%  function with ``Hi''? Justify.
+%
+%  \vfill
+%  Can you build a $\lambda$-term that receives a function
+%  $f : \typeA \to \typeA$, receives a value $x : \typeA$, and applies
+%  $f$ to $x$ twice? In \alert{classical} $\lambda$-calculus such would
+%  be defined as
+%  \begin{flalign*}
+%    \lambda f : \typeA \to \typeA.\ \lambda x : \typeA. \> f (f \> x)
+%  \end{flalign*}
+%\end{slide}
+%
+%% \begin{slide}{Sharing contexts}
+%%   It is very useful to have two programs $M,N$ in sequential composition
+%%   $x \leftarrow M \pcomp N$ that are able share contexts
+%
+%%   \vfill
+%%   In other words, it would be useful to have the following rule for
+%%   sequential composition
+%%   \begin{flalign*}
+%%     \infer{\dkb{\Gamma} \cojud x \leftarrow M \pcomp N : \typeB}
+%%     {\dkb{\Gamma} \cojud M : \typeA \qquad \dkb{\Gamma}, x:\typeA \cojud N : \typeB }
+%%   \end{flalign*}
+%
+%%   \vfill
+%%   \pause
+%%   This would allow us to solve the previous exercise quite easily
+%%   \begin{flalign*}
+%%     \lambda f : \typeA \to \typeA, \lambda x : \typeA . \>
+%%     y \leftarrow f(x) \pcomp f(y)
+%%   \end{flalign*}
+%% \end{slide}
+%
+%% \begin{slide}{Sharing contexts}
+%%   The natural way of interpreting the rule would be
+%%     \begin{flalign*}
+%%     \infer{\sem{\Gamma \cojud x \leftarrow M \pcomp N : \typeB}\ =  g^\star  \comp \pv{\id,f}}
+%%     {\sem{\Gamma \cojud M : \typeA}\ = f \qquad \sem{\Gamma, x:\typeA \cojud N : \typeB}\ = g }
+%%   \end{flalign*}
+%%   but $\pv{\id,f} : \sem{\Gamma}\ \longrightarrow \dkb{\sem{\Gamma} \times T\sem{\typeA}}$
+%%   and $g^\star : \dkb{T(\sem{\Gamma} \times \sem{\typeA})} \longrightarrow T\sem{\typeB}$
+%%   \vfill
+%%   We need to find a suitable function
+%%   \begin{flalign*}
+%%     \mathrm{str}:
+%%     \sem{\Gamma} \times T\sem{\typeA} \longrightarrow T(\sem{\Gamma} \times \sem{\typeA})
+%%   \end{flalign*}
+%%   \vfill \pause
+%%   There is a natural way of doing this!
+%% \end{slide}
+%
+%% \begin{slide}{Tensorial strength}
+%%   For every monad $T$ and function $f : X \to Y$ we can build
+%%   a function
+%%   \begin{flalign*}
+%%     \dkb{Tf = (\eta \comp f)^\star} : TX \to TY
+%%   \end{flalign*}
+%
+%%   \vfill
+%%   Note also that for every $x \in X$ we can define
+%%   \begin{flalign*}
+%%     \id_x : Y \to X \times Y, \quad \dkb{y \mapsto (x,y)}
+%%   \end{flalign*}
+%
+%%   \vfill
+%%   From these, we define the so-called \dkb{strength} of $T$
+%%   \begin{flalign*}
+%%     \mathrm{str} : X \times TY \to T(X \times Y), \quad
+%%     \dkb{(x,t) \mapsto (T \id_x) (t)}
+%%   \end{flalign*}
+%%   \vfill
+%%   Finally,
+%%   \begin{flalign*}
+%%     \infer{\sem{\Gamma \cojud x \leftarrow M \pcomp N : \typeB}\ =
+%%       g^\star \comp \mathrm{str} \comp \pv{\id,f}} {\sem{\Gamma \cojud M : \typeA}\ = f
+%%       \qquad \sem{\Gamma, x:\typeA \cojud N : \typeB}\ = g }
+%%   \end{flalign*}
+%% \end{slide}
+%
+%% \begin{slide}{Exercises}
+%%   Given an explicit definition for the tensorial strength of
+%%   \begin{itemize}
+%%   \item the monad of exceptions,
+%%   \item the monad of durations
+%%   \end{itemize}
+%
+%%   \vfill
+%%   Consider the $\lambda$-terms
+%%   \begin{flalign*}
+%%     \lambda f : \typeA \to \typeA, \lambda x : \typeA . \>
+%%     y \leftarrow f(x) \pcomp f(y) \\
+%%     g = \lambda x : \typeA . \> \mathrm{wait_1}(\ret \> x)
+%%   \end{flalign*}
+%%   What is the result of computing the $\lambda$-term below?
+%%   \begin{flalign*}
+%%    \Big (\lambda f : \typeA \to \typeA, \lambda x : \typeA . \>
+%%     y \leftarrow f(x) \pcomp f(y) \Big ) \> g \> "Hi"
+%%   \end{flalign*}
+%
+%% \end{slide}
+%
+%% \begin{slide}{Going generic}
+%%   Let us generalise what we learned about wait calls to arbitrary
+%%   algebraic effects.  We choose an algebraic theory $(\Sigma, E)$ and
+%%   obtain \footnotesize
+%
+%%   \vspace{0.2cm}
+%%    \begin{flalign*}
+%%     \infer{\Gamma \vljud x_i : \typeA}{x_i : \typeA \in \Gamma}
+%%     \hspace{1cm}
+%%     \infer{\Gamma \vljud \ast : \typeOne}{}
+%%     \hspace{1cm}
+%%     \infer{\Gamma \vljud \langle V, U \rangle : \typeA \times \typeB}
+%%     {\Gamma \vljud V : \typeA \qquad  \Gamma \vljud U : \typeB}
+%%   \end{flalign*}
+%%   \begin{flalign*}
+%%        \infer[]{\Gamma \vljud \lambda x : \typeA . \, M : \typeA
+%%         \to \typeB}
+%%     {\Gamma, x : \typeA \cojud M : \typeB} \hspace{2cm}
+%%        \infer[]{\Gamma \vljud \pi_1 V : \typeA}
+%%       {\Gamma \vljud V: \typeA \times \typeB}
+%%   \end{flalign*}
+%%   \dotfill
+%%   \begin{flalign*}
+%%     \infer{\Gamma \cojud \ret V : \typeA}
+%%     {\Gamma \vljud V : \typeA} \hspace{1cm}
+%%     \infer{\Gamma \cojud x \leftarrow M \pcomp N : \typeB}
+%%     {\Gamma \cojud M : \typeA  \qquad \Gamma, x:\typeA \cojud N : \typeB}
+%%   \end{flalign*}
+%%   \begin{flalign*}
+%%      \infer[]{\Gamma \cojud V \, U : \typeB}
+%%       {\Gamma \vljud  V : \typeA \to \typeB \quad
+%%        \Gamma \vljud  U : \typeA} \hspace{2cm}
+%%      \infer{\Gamma \cojud \sigma(M_1, \dots M_n) : \typeA}{\sigma : n \in \Sigma \qquad
+%%      \forall i \leq n . \> \Gamma \cojud M_i : \typeA}
+%%   \end{flalign*}
+%% \end{slide}
+%
+%% \begin{slide}{Going generic}
+%%   We now need to choose a suitable monad $T$ to interpret the language
+%%   \vfill
+%  
+%%   There are sophisticated ways of doing this
+%
+%%   \vfill
+%%   It is even possible to automatically \dkb{generate} a monad for the language
+%
+%%   \vfill
+%%   Here we will simply choose monads that seem suitable for the
+%%   job. By suitable, we mean that for every set $X$ the set $TX$ must
+%%   be a $(\Sigma,E)$-algebra.
+%% \end{slide}
+%
+%% \begin{slide}{A generic semantics}
+%%     \footnotesize
+%%      \begin{flalign*}
+%%     \infer{\sem{\Gamma \vljud x_i} = \pi_i}{x_i : \typeA \in \Gamma}
+%%     \hspace{1cm}
+%%     \infer{\sem{\Gamma \vljud \ast}\ = \> !}{}
+%%     \hspace{1cm}
+%%     \infer{\sem{\Gamma \vljud \langle V, U \rangle : \typeA \times \typeB} = \pv{f,g}}
+%%     {\sem{\Gamma \vljud V : \typeA}\ = f \qquad  \sem{\Gamma \vljud U : \typeB}\ = g}
+%%   \end{flalign*}
+%%   \begin{flalign*}
+%%        \infer[]{\sem{\Gamma \vljud \lambda x : \typeA . \, M : \typeA
+%%         \to \typeB} = \lambda f}
+%%     {\sem{\Gamma, x : \typeA \cojud M : \typeB}\ = f} \hspace{2cm}
+%%        \infer[]{\sem{\Gamma \vljud \pi_1 V : \typeA}\  = \pi_1 \comp f }
+%%       {\sem{\Gamma \vljud V: \typeA \times \typeB}}
+%%   \end{flalign*}
+%%   \dotfill
+%%   \begin{flalign*}
+%%     \infer{\sem{\Gamma \cojud \ret V : \typeA} = \eta \comp f}
+%%     {\sem{\Gamma \vljud V : \typeA} = f} \hspace{1cm}
+%%     \infer{\sem{\Gamma \cojud x \leftarrow M \pcomp N : \typeB} = g^\star \comp
+%%       \mathrm{str} \comp f}
+%%     {\sem{\Gamma \cojud M : \typeA} = f  \qquad \sem{\Gamma, x:\typeA \cojud N : \typeB} = g}
+%%   \end{flalign*}
+%%   \begin{flalign*}
+%%     \infer[]{\sem{\Gamma \cojud V \, U : \typeB} = \mathrm{app} \comp
+%%       \pv{f,g}} {\sem{\Gamma \vljud V : \typeA \to \typeB} = f \quad
+%%       \sem{\Gamma \vljud U : \typeA} = g} \hspace{0.4cm}
+%%     \infer{\sem{\Gamma \cojud \sigma(M_1, \dots M_n)}\ = \sem{\sigma}
+%%       \comp \pv{f_1,\dots,f_n}}{\sigma : n \in \Sigma \qquad \forall i
+%%       \leq n . \> \sem{\Gamma \cojud M_i : \typeA} = f_i}
+%%   \end{flalign*}
+%% \end{slide}
+
+\end{document}
