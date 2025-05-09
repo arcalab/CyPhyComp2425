@@ -40,10 +40,12 @@ concurrent algorithms.
   | 22 apr. 2025 | Lambda-calculus with effects ([slides](./lambda_calc/stlcE.pdf))| 
   | 06 may 2025 | Monads in practice ([code](./code.zip))| 
 
+
 # Assessment
 
 Two individual assignments:
 + [first assignment](tp_uppaal/tp.pdf)
++ [second assignment](tp_haskell/tp2.pdf) and [respective code](tp_haskell/code_tp2.zip)
 
  
 # Contacts
